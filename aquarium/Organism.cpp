@@ -8,10 +8,10 @@ void Organism::move(coordinates dislocation)
 	location = dislocation;
 };
 
-void Organism::reproduce()
+void Organism::life()
 {
 	lifeTime--;
-};
+}
 
 int Organism::getRadOfView()
 {

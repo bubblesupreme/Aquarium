@@ -12,8 +12,12 @@ int Fish::getStarvation()
 	return starvation;
 }
 
+void Fish::hunger()
+{
+	starvation--;
+}
+
 void Fish::eat()
 {
-	lifeTime--;
 	starvation = eatTime;
 }

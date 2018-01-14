@@ -13,5 +13,5 @@ Predator::~Predator()
 
 void Predator::move(std::map<Organism&, int> neighbors)
 {
-	lifeTime--;
+
 }

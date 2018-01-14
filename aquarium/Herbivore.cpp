@@ -13,5 +13,4 @@ Herbivore::~Herbivore()
 
 void Herbivore::move(std::map<Organism&, int> neighbors)
 {
-	lifeTime--;
 }

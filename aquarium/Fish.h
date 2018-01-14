@@ -9,6 +9,7 @@ public:
 		int lifeTime_, int starvation_, int eatTime_);
 	virtual ~Fish()=0;
 	virtual void move(std::map<Organism&, int> neighbors) = 0;
+	void hunger();
 	int getStarvation();
 	void eat();
 

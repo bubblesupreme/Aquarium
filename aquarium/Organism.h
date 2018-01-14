@@ -11,7 +11,7 @@ public:
 	virtual ~Organism()=0;
 	void move(coordinates dislocation);
 	virtual void move(std::map<Organism&, int> neighbors) = 0;
-	void reproduce();
+	void life();
 	int getRadOfView();
 	int getRadOfDisp();
 	int getLifeTime();
