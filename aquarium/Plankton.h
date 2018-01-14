@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PLANKTON_H
+#define PLANKTON_H
 
 #include "Organism.h"
 
@@ -12,3 +13,4 @@ public:
 	virtual void move(std::map<Organism&, int> neighbors) override;
 };
 
+#endif

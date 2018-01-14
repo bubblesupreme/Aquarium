@@ -1,5 +1,8 @@
-#pragma once
+#ifndef HERBIVORE_H
+#define HERBIVORE_H
+
 #include "Fish.h"
+
 class Herbivore :
 	public Fish
 {
@@ -10,3 +13,4 @@ public:
 	virtual void move(std::map<Organism&, int> neighbors) override;
 };
 
+#endif

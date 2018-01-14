@@ -1,4 +1,6 @@
-#pragma once
+#ifndef FISH_H
+#define FISH_H
+
 #include "Organism.h"
 
 class Fish :
@@ -18,3 +20,4 @@ protected:
 	int starvation;
 };
 
+#endif

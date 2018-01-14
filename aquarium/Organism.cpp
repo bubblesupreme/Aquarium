@@ -3,7 +3,7 @@
 Organism::Organism(coordinates location_, int radOfDisp_, int radOfView_,
 	int lifeTime_, int starvation_) : lifeTime(lifeTime_), radOfDisp(radOfDisp_), radOfView(radOfView_) {};
 
-void Organism::move(coordinates dislocation)
+void Organism::moveDisl(coordinates dislocation)
 {
 	location = dislocation;
 };
@@ -26,4 +26,9 @@ int Organism::getRadOfDisp()
 int Organism::getLifeTime()
 {
 	return lifeTime;
+};
+
+coordinates Organism::getLocation()
+{
+	return location;
 };

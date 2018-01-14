@@ -1,4 +1,6 @@
-#pragma once
+#ifndef PREDATOR_H
+#define PREDATOR_H
+
 #include "Fish.h"
 
 class Predator :
@@ -11,3 +13,4 @@ public:
 	virtual void move(std::map<Organism&, int> neighbors) override;
 };
 
+#endif
