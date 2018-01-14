@@ -11,11 +11,11 @@ class Predator
 public:
 	void update() { std::cout << "it works" << std::endl; }
 };
-class Plankton
-{
-public:
-	void update() { std::cout << "it works" << std::endl; }
-};
+//class Plankton
+//{
+//public:
+//	void update() { std::cout << "it works" << std::endl; }
+//};
 ///
 class Aquarium
 {
