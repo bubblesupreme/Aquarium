@@ -1,43 +1,33 @@
-#include "aquarium.h"
+#include "Fish.h"
+#include "Plankton.h"
+#include "Predator.h"
+#include <vector>
+
+class Aquarium
+{
+public:
+	Aquarium(std::pair<int, int> size);
+	Aquarium(std::pair<int, int> size, std::vector<Fish*> listOfFishs,
+		std::vector<Plankton*> listOfPlanktons, std::vector<Predator*> listOfPredators);
+	~Aquarium();
+	void show();
+	void update();
+	void addFish(Fish* fish);
+	void addPlankton(Plankton* plankton);
+	void addPredator(Predator* predator);
 
 
+private:
+	int wave(int x, int y, int exX, int exY, int** map, int n, int m);
+	std::pair<int, int> size;
+	int** map;
+	std::vector<Fish*> listOfFishs;
+	std::vector<Plankton*> listOfPlanktons;
+	std::vector<Predator*> listOfPredators;
+	void reprodaction();
+	void eating();
+	std::map<Organism&, int> searchNeighbors(Fish*);
+	std::map<Organism&, int> searchNeighbors(Plankton*);
+	std::map<Organism&, int> searchNeighbors(Predator*);
 
-Aquarium::Aquarium(std::pair<double, double> size, std::vector<Fish*> listOfFishs,
-	std::vector<Plankton*> listOfPlanktons, std::vector<Predator*> listOfPredators)
-{
-	this->size = size;
-	this->listOfFishs = listOfFishs;
-	this->listOfPlanktons = listOfPlanktons;
-	this->listOfPredators = listOfPredators;
-}
-Aquarium::~Aquarium()
-{
-	
-	for (auto i : this->listOfFishs)
-	{
-		delete i;
-	}
-	for (auto i : this->listOfPlanktons)
-	{
-		delete i;
-	}
-	for (auto i : this->listOfPredators)
-	{
-		delete i;
-	}
-}
-void Aquarium::update()
-{
-	for (auto i : this->listOfFishs)
-	{
-		i->update();
-	}
-	for (auto i : this->listOfPlanktons)
-	{
-		i->update();
-	}
-	for (auto i : this->listOfPredators)
-	{
-		i->update();
-	}
-}
+};
