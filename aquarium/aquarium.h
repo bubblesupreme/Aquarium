@@ -1,37 +1,37 @@
 #pragma once
-#include "Header.h"
-///
-class Fish
-{
-public:
-	void update() { std::cout << "it works" << std::endl; }
-};
-class Predator
-{
-public:
-	void update() { std::cout << "it works" << std::endl; }
-};
-//class Plankton
-//{
-//public:
-//	void update() { std::cout << "it works" << std::endl; }
-//};
+#include "Fish.h"
+#include "Plankton.h"
+#include "Predator.h"
+#include <vector>
+
 ///
 class Aquarium
 {
 public:
-	Aquarium(std::pair<double, double> size) :size(size){}
-	Aquarium(std::pair<double, double> size, std::vector<Fish*> listOfFishs,
+	Aquarium(std::pair<int, int> size);
+	Aquarium(std::pair<int, int> size, std::vector<Fish*> listOfFishs,
 		std::vector<Plankton*> listOfPlanktons, std::vector<Predator*> listOfPredators);
 	~Aquarium();
-	//void show();
+	void show();
 	void update();
+	void addFish(Fish* fish);
+	void addPlankton(Plankton* plankton);
+	void addPredator(Predator* predator);
 
 
 private:
-	std::pair<double, double> size;
+	int wave(int x, int y, int exX, int exY, int** map, int n, int m);
+	std::pair<int, int> size;
+	int** map;
 	std::vector<Fish*> listOfFishs;
 	std::vector<Plankton*> listOfPlanktons;
 	std::vector<Predator*> listOfPredators;
+	void reprodaction();
+	void eating();
+	std::map<Organism&, int> searchNeighbors(Fish*);
+	std::map<Organism&, int> searchNeighbors(Plankton*);
+	std::map<Organism&, int> searchNeighbors(Predator*);
+
 };
+
 
