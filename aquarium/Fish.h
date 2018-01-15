@@ -9,10 +9,10 @@ class Fish :
 public:
 	Fish(coordinates location_, int radOfDisp_, int radOfview_,
 		int lifeTime_, int starvation_, int eatTime_);
-	virtual ~Fish()=0;
-	virtual void move(std::map<Organism&, int> neighbors) = 0;
+	virtual ~Fish() = 0;
 	void hunger();
-	int getStarvation();
+	int getStarvation() const;
+	int getEatTime() const;
 	void eat();
 
 protected:

@@ -13,22 +13,27 @@ void Organism::life()
 	lifeTime--;
 }
 
-int Organism::getRadOfView()
+int Organism::getRadOfView()const
 {
 	return radOfView;
 };
 
-int Organism::getRadOfDisp()
+int Organism::getRadOfDisp()const
 {
 	return radOfDisp;
 };
 
-int Organism::getLifeTime()
+int Organism::getLifeTime()const
 {
 	return lifeTime;
 };
 
-coordinates Organism::getLocation()
+int Organism::getReprodaction() const
+{
+	return reprodaction;
+}
+
+coordinates Organism::getLocation()const
 {
 	return location;
 };

@@ -7,7 +7,7 @@ Fish::Fish(coordinates location_, int radOfDisp_, int radOfview_,
 		lifeTime_, starvation_), eatTime(eatTime_)
 {}
 
-int Fish::getStarvation()
+int Fish::getStarvation()const
 {
 	return starvation;
 }
@@ -20,4 +20,9 @@ void Fish::hunger()
 void Fish::eat()
 {
 	starvation = eatTime;
+}
+
+int Fish::getEatTime() const
+{
+	return eatTime;
 }
