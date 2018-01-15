@@ -8,7 +8,7 @@ class Fish :
 {
 public:
 	Fish(coordinates location_, int radOfDisp_, int radOfview_,
-		int lifeTime_, int starvation_, int eatTime_);
+		int lifeTime_, int starvation_, int eatTime_, int pauseReprodaction_);
 	virtual ~Fish() = 0;
 	void hunger();
 	int getStarvation() const;

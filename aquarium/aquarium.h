@@ -28,7 +28,7 @@ public:
 
 private:
 	int wave(int x, int y, int exX, int exY, int** map, int n, int m);
-	void reproduce();
+	void produce();
 	void eating();
 	std::map<Organism&, int> searchNeighbors(Herbivore*);
 	std::map<Organism&, int> searchNeighbors(Plankton*);

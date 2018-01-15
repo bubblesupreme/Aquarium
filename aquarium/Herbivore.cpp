@@ -4,7 +4,7 @@
 
 Herbivore::Herbivore(coordinates location_, int radOfDisp_, int radOfview_,
 	int lifeTime_, int starvation_, int eatTime_) :Fish(location_, radOfDisp_, radOfview_,
-		lifeTime_, starvation_, eatTime_)
+		lifeTime_, starvation_, eatTime_,3)
 {
 	if ((radOfView > 9) || (radOfView < 6)||
 		(radOfDisp > 6) || (radOfDisp < 4)||

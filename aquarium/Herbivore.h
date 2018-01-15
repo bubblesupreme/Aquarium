@@ -7,6 +7,7 @@
     radOfDisp: 4-6
     lifeTime: 8-11 days
 	eatTime: 4-5 days
+	pauseReprodaction: 3
 */
 
 class Herbivore :

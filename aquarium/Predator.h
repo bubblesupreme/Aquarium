@@ -7,6 +7,7 @@
     radOfDisp: 6-7
     lifeTime: 3-5 days
 	eatTime: 2-3 days
+	pauseReprodaction: 3
 */
 
 class Predator :
