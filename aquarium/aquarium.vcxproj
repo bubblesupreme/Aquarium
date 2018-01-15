@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -112,11 +112,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="aquarium.h" />
-    <ClInclude Include="Base.h" />
-    <ClInclude Include="Header.h" />
+    <ClInclude Include="Fish.h" />
+    <ClInclude Include="Herbivore.h" />
+    <ClInclude Include="Organism.h" />
+    <ClInclude Include="Plankton.h" />
+    <ClInclude Include="Predator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="aquarium.cpp" />
+    <ClCompile Include="Fish.cpp" />
+    <ClCompile Include="Herbivore.cpp" />
+    <ClCompile Include="Organism.cpp" />
+    <ClCompile Include="Plankton.cpp" />
+    <ClCompile Include="Predator.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
