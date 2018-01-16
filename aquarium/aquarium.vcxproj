@@ -112,6 +112,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="aquarium.h" />
+    <ClInclude Include="Exception.h" />
     <ClInclude Include="Fish.h" />
     <ClInclude Include="Herbivore.h" />
     <ClInclude Include="Organism.h" />
@@ -120,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="aquarium.cpp" />
+    <ClCompile Include="Exception.cpp" />
     <ClCompile Include="Fish.cpp" />
     <ClCompile Include="Herbivore.cpp" />
     <ClCompile Include="Organism.cpp" />

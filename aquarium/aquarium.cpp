@@ -1,8 +1,8 @@
 #include "aquarium.h"
 #include <iostream>
-#include <map>
+//#include <map>
 
-Aquarium::Aquarium(std::pair<int, int> size) :size(size)
+Aquarium::Aquarium(coordinates size) :size(size)
 {
 	map = new int*[size.first];
 	for (int i = 0; i < size.first; i++)
@@ -13,11 +13,12 @@ Aquarium::Aquarium(std::pair<int, int> size) :size(size)
 	}
 
 }
-Aquarium::Aquarium(std::pair<int, int> size, std::vector<Fish*> listOfFishs,
+
+Aquarium::Aquarium(coordinates size, std::vector<Herbivore*> listOfHerbivore,
 	std::vector<Plankton*> listOfPlanktons, std::vector<Predator*> listOfPredators)
+	:size(size)
 {
-	this->size = size;
-	this->listOfFishs = listOfFishs;
+	this->listOfHerbivore = listOfHerbivore;
 	this->listOfPlanktons = listOfPlanktons;
 	this->listOfPredators = listOfPredators;
 
@@ -28,100 +29,128 @@ Aquarium::Aquarium(std::pair<int, int> size, std::vector<Fish*> listOfFishs,
 		for (int j = 0; j < size.second; j++)
 			map[i][j] = 0;
 	}
+	if ((listOfHerbivore.size()*coefOfHerbivore
+		+listOfPlanktons.size()*coefOfPlancton
+		+listOfPredators.size()*coefOfPredator)
+		>size.first*size.second)
+	{
+		throw Exception(4);
+	}
 }
+
 Aquarium::~Aquarium()
 {
-	listOfFishs.clear();
+	listOfHerbivore.clear();
 	listOfPlanktons.clear();
 	listOfPredators.clear();
 }
+
 void Aquarium::update()
 {
-	for (auto i : this->listOfFishs)
+	for (auto i : this->listOfHerbivore)
 	{
 		i->life();
 		if (i->getEatTime() / i->getStarvation() > 0.5)
 		{
 
 		}
-		i->move(searchNeighbors(i));
+		i->move(searchNeighbors(i,coefOfHerbivore),size);
 	}
 	for (auto i : this->listOfPlanktons)
 	{
 		i->life();
-		i->move(searchNeighbors(i));
+		i->move(searchNeighbors(i,coefOfPlancton),size);
 	}
 	for (auto i : this->listOfPredators)
 	{
 		i->life();
-		i->move(searchNeighbors(i));
+		i->move(searchNeighbors(i,coefOfPredator),size);
 	}
 }
 
-void  Aquarium::addFish(Fish* fish)
+void  Aquarium::addHerbivore(Herbivore* herbivore)
 {
-	listOfFishs.push_back(fish);
+	if (((listOfHerbivore.size()+1)*coefOfHerbivore
+		+ listOfPlanktons.size()*coefOfPlancton
+		+ listOfPredators.size()*coefOfPredator)
+		>size.first*size.second)
+	{
+		throw Exception(4);
+	}
+	else
+	{
+		listOfHerbivore.push_back(herbivore);
+	}
 }
+
 void  Aquarium::addPlankton(Plankton* plankton)
 {
-	listOfPlanktons.push_back(plankton);
+	if ((listOfHerbivore.size()*coefOfHerbivore
+		+ (listOfPlanktons.size()+1)*coefOfPlancton
+		+ listOfPredators.size()*coefOfPredator)
+	>size.first*size.second)
+	{
+		throw Exception(4);
+	}
+	else
+	{
+		listOfPlanktons.push_back(plankton);
+	}
 }
+
 void  Aquarium::addPredator(Predator* predator)
 {
-	listOfPredators.push_back(predator);
+	if ((listOfHerbivore.size()*coefOfHerbivore
+		+ listOfPlanktons.size()*coefOfPlancton
+		+ (listOfPredators.size()+1)*coefOfPredator)
+		>size.first*size.second)
+	{
+		throw Exception(4);
+	}
+	else
+	{
+		listOfPredators.push_back(predator);
+	}
 }
+
 void Aquarium::show()
 {
-	std::cout << "F" << listOfFishs.size() << std::endl;
+	std::cout << "F" << listOfHerbivore.size() << std::endl;
 	std::cout << "Pl" << listOfPlanktons.size() << std::endl;
 	std::cout << "Pr" << listOfPredators.size() << std::endl;
 }
-std::map<Organism&, int> Aquarium::searchNeighbors(Fish* fish)
+
+std::map<Organism&, int> Aquarium::searchNeighbors(Organism* org, int coef)
 {
-	std::pair<int, int> pos = fish->getPosition();
-	std::map<Organism&, int> mapOfPredators;
-	for (auto u : listOfPredators)
+	coordinates pos = org->getLocation();
+	std::map<Organism&, int> mapOfOrganism;
+	if (coef == coefOfHerbivore)
+	{
+		for (auto u : listOfPredators)
 		{
-			std::pair<int, int> posOfPredator = u->getPosition();
+			coordinates posOfPredator = u->getLocation();
 			int result = wave(pos.second, pos.first, posOfPredator.second, posOfPredator.first, this->map, size.first, size.second);
-			if (result <= fish->getRadOfView())
+			if (result <= org->getRadOfView())
 			{
-				mapOfPredators[*fish] = result;
+				mapOfOrganism[*org] = result;
 			}
 		}
-	return mapOfPredators;
-}
-std::map<Organism&, int> Aquarium::searchNeighbors(Plankton* plankton)
-{
-	std::pair<int, int> pos = plankton->getPosition();
-	std::map<Organism&, int> mapOfPredators;
-	for (auto u : listOfFishs)
+	}
+	if ((coef == coefOfPlancton)||(coef==coefOfPredator))
 	{
-		std::pair<int, int> posOfPredator = u->getPosition();
-		int result = wave(pos.second, pos.first, posOfPredator.second, posOfPredator.first, this->map, size.first, size.second);
-		if (result <= plankton->getRadOfView_())
+		for (auto u : listOfHerbivore)
 		{
-			mapOfPredators[*plankton] = result;
+			coordinates posOfPredator = u->getLocation();
+			int result = wave(pos.second, pos.first, posOfPredator.second, posOfPredator.first, this->map, size.first, size.second);
+			if (result <= org->getRadOfView())
+			{
+				mapOfOrganism[*org] = result;
+			}
 		}
 	}
-	return mapOfPredators;
+	return mapOfOrganism;
 }
-std::map<Organism&, int> Aquarium::searchNeighbors(Predator* predator)
-{
-	std::pair<int, int> pos = predator->getPosition();
-	std::map<Organism&, int> mapOfFishs;
-	for (auto u : listOfFishs)
-	{
-		std::pair<int, int> posOfPredator = u->getPosition();
-		int result = wave(pos.second, pos.first, posOfPredator.second, posOfPredator.first, this->map, size.first, size.second);
-		if (result <= predator->getRadOfView_())
-		{
-			mapOfFishs[*predator] = result;
-		}
-	}
-	return mapOfFishs;
 
-}
 int Aquarium::wave(int x, int y, int exX, int exY, int** map, int n, int m)
 {
 	bool fl = true;
@@ -163,4 +192,14 @@ int Aquarium::wave(int x, int y, int exX, int exY, int** map, int n, int m)
 		temp++;
 	}
 	return temp;
+}
+
+bool Aquarium::produce()
+{
+
+}
+
+bool Aquarium::eating()
+{
+
 }
