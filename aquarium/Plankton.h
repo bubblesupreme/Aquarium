@@ -15,7 +15,7 @@ class Plankton :
 {
 public:
 	Plankton(coordinates location_, int radOfDisp_, int radOfview_,
-		int lifeTime_, int starvation_);
+		int lifeTime_);
 	virtual ~Plankton();
 	virtual void move(std::map<Organism&, int> neighbors, coordinates sizeAqua) override;
 };

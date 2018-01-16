@@ -54,17 +54,17 @@ void Aquarium::update()
 		{
 
 		}
-		i->move(searchNeighbors(i));
+		i->move(searchNeighbors(i,coefOfHerbivore),size);
 	}
 	for (auto i : this->listOfPlanktons)
 	{
 		i->life();
-		i->move(searchNeighbors(i));
+		i->move(searchNeighbors(i,coefOfPlancton),size);
 	}
 	for (auto i : this->listOfPredators)
 	{
 		i->life();
-		i->move(searchNeighbors(i));
+		i->move(searchNeighbors(i,coefOfPredator),size);
 	}
 }
 
@@ -120,53 +120,35 @@ void Aquarium::show()
 	std::cout << "Pr" << listOfPredators.size() << std::endl;
 }
 
-std::map<Organism&, int> Aquarium::searchNeighbors(Herbivore* herbivore)
+std::map<Organism&, int> Aquarium::searchNeighbors(Organism* org, int coef)
 {
-	coordinates pos = herbivore->getLocation();
-	std::map<Organism&, int> mapOfPredators;
-	for (auto u : listOfPredators)
+	coordinates pos = org->getLocation();
+	std::map<Organism&, int> mapOfOrganism;
+	if (coef == coefOfHerbivore)
 	{
-		coordinates posOfPredator = u->getLocation();
-		int result = wave(pos.second, pos.first, posOfPredator.second, posOfPredator.first, this->map, size.first, size.second);
-		if (result <= herbivore->getRadOfView())
+		for (auto u : listOfPredators)
 		{
-			mapOfPredators[*herbivore] = result;
+			coordinates posOfPredator = u->getLocation();
+			int result = wave(pos.second, pos.first, posOfPredator.second, posOfPredator.first, this->map, size.first, size.second);
+			if (result <= org->getRadOfView())
+			{
+				mapOfOrganism[*org] = result;
+			}
 		}
 	}
-	return mapOfPredators;
-}
-
-std::map<Organism&, int> Aquarium::searchNeighbors(Plankton* plankton)
-{
-	coordinates pos = plankton->getLocation();
-	std::map<Organism&, int> mapOfHerbivore;
-	for (auto u : listOfHerbivore)
+	if ((coef == coefOfPlancton)||(coef==coefOfPredator))
 	{
-		coordinates posOfPredator = u->getLocation();
-		int result = wave(pos.second, pos.first, posOfPredator.second, posOfPredator.first, this->map, size.first, size.second);
-		if (result <= plankton->getRadOfView())
+		for (auto u : listOfHerbivore)
 		{
-			mapOfHerbivore[*plankton] = result;
+			coordinates posOfPredator = u->getLocation();
+			int result = wave(pos.second, pos.first, posOfPredator.second, posOfPredator.first, this->map, size.first, size.second);
+			if (result <= org->getRadOfView())
+			{
+				mapOfOrganism[*org] = result;
+			}
 		}
 	}
-	return mapOfHerbivore;
-}
-
-std::map<Organism&, int> Aquarium::searchNeighbors(Predator* predator)
-{
-	coordinates pos = predator->getLocation();
-	std::map<Organism&, int> mapOfHerbivore;
-	for (auto u : listOfHerbivore)
-	{
-		coordinates posOfPredator = u->getLocation();
-		int result = wave(pos.second, pos.first, posOfPredator.second, posOfPredator.first, this->map, size.first, size.second);
-		if (result <= predator->getRadOfView())
-		{
-			mapOfHerbivore[*predator] = result;
-		}
-	}
-	return mapOfHerbivore;
-
+	return mapOfOrganism;
 }
 
 int Aquarium::wave(int x, int y, int exX, int exY, int** map, int n, int m)
@@ -210,4 +192,14 @@ int Aquarium::wave(int x, int y, int exX, int exY, int** map, int n, int m)
 		temp++;
 	}
 	return temp;
+}
+
+bool Aquarium::produce()
+{
+
+}
+
+bool Aquarium::eating()
+{
+
 }

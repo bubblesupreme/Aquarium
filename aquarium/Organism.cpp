@@ -1,7 +1,7 @@
 #include "Organism.h"
 
 Organism::Organism(coordinates location_, int radOfDisp_, int radOfView_,
-	int lifeTime_, int starvation_, int pauseReprodaction_) : lifeTime(lifeTime_), radOfDisp(radOfDisp_),
+	int lifeTime_, int pauseReprodaction_) : lifeTime(lifeTime_), radOfDisp(radOfDisp_),
 	radOfView(radOfView_), pauseReprodaction(pauseReprodaction_), reprodaction(0) {};
 
 void Organism::moveDisl(coordinates dislocation)

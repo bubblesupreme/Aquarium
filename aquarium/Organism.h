@@ -11,7 +11,7 @@ class Organism
 {
 public:
 	Organism(coordinates location_, int radOfDisp_, int radOfView_,
-		int lifeTime_, int starvation_,int pauseReprodaction_);
+		int lifeTime_,int pauseReprodaction_);
 	virtual ~Organism() = 0;
 	void moveDisl(coordinates dislocation);
 	virtual void move(std::map<Organism&, int> neighbors, coordinates sizeAqua) = 0;
