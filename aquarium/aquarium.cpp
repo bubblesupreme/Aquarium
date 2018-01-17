@@ -51,8 +51,11 @@ void Aquarium::update()
 		}
 		else if (i->getReprodaction() >= i->getPauseReprodaction())
 		{
-			produce(i, coefOfHerbivore);
-			i->reproduce();
+			if(produce(i, coefOfHerbivore))
+			{
+				i->reproduce();
+			}
+			
 		}
 		else
 		{
@@ -85,8 +88,11 @@ void Aquarium::update()
 			}
 			else if (i->getReprodaction() >= i->getPauseReprodaction())
 			{
-				produce(i, coefOfPredator);
-				i->reproduce();
+				if(produce(i, coefOfPredator))
+				{
+					i->reproduce();
+				}
+				
 			}
 			else
 			{
