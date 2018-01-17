@@ -1,18 +1,8 @@
 #include "aquarium.h"
 #include <iostream>
-//#include <map>
+#include <cstdlib>
 
-Aquarium::Aquarium(coordinates size) :size(size)
-{
-	map = new int*[size.first];
-	for (int i = 0; i < size.first; i++)
-	{
-		map[i] = new int[size.second];
-		for (int j = 0; j < size.second; j++)
-			map[i][j] = 0;
-	}
-
-}
+Aquarium::Aquarium(coordinates size) :size(size){}
 
 Aquarium::Aquarium(coordinates size, std::vector<Herbivore*> listOfHerbivore,
 	std::vector<Plankton*> listOfPlanktons, std::vector<Predator*> listOfPredators)
@@ -22,13 +12,6 @@ Aquarium::Aquarium(coordinates size, std::vector<Herbivore*> listOfHerbivore,
 	this->listOfPlanktons = listOfPlanktons;
 	this->listOfPredators = listOfPredators;
 
-	map = new int*[size.first];
-	for (int i = 0; i < size.first; i++)
-	{
-		map[i] = new int[size.second];
-		for (int j = 0; j < size.second; j++)
-			map[i][j] = 0;
-	}
 	if ((listOfHerbivore.size()*coefOfHerbivore
 		+listOfPlanktons.size()*coefOfPlancton
 		+listOfPredators.size()*coefOfPredator)
@@ -49,25 +32,71 @@ void Aquarium::update()
 {
 	for (auto i : this->listOfHerbivore)
 	{
+
 		i->life();
+		i->hunger();
+		if (i->getStarvation() == 0 || i->getLifeTime() == 0)
+		{
+			std::swap(i, listOfHerbivore.back());
+			listOfHerbivore.pop_back();
+			continue;
+		}
 		if (i->getEatTime() / i->getStarvation() > 0.5)
 		{
+			if (eating(i, coefOfHerbivore))
+			{
+				i->eat();
+			}
 
 		}
-		i->move(searchNeighbors(i,coefOfHerbivore),size);
+		else if (i->getReprodaction() >= i->getPauseReprodaction())
+		{
+			produce(i, coefOfHerbivore);
+			i->reproduce();
+		}
+		else
+		{
+			i->move(searchNeighbors(i, coefOfHerbivore), size);
+		}
+
 	}
 	for (auto i : this->listOfPlanktons)
 	{
 		i->life();
-		i->move(searchNeighbors(i,coefOfPlancton),size);
-	}
-	for (auto i : this->listOfPredators)
-	{
-		i->life();
-		i->move(searchNeighbors(i,coefOfPredator),size);
+		i->move(searchNeighbors(i, coefOfPlancton), size);
+
+		for (auto i : this->listOfPredators)
+		{
+			i->life();
+			i->hunger();
+			if (i->getStarvation() == 0 || i->getLifeTime() == 0)
+			{
+				std::swap(i, listOfPredators.back());
+				listOfPredators.pop_back();
+				continue;
+			}
+			if (i->getEatTime() / i->getStarvation() > 0.5)
+			{
+				if (eating(i, coefOfPredator))
+				{
+					i->eat();
+				}
+
+			}
+			else if (i->getReprodaction() >= i->getPauseReprodaction())
+			{
+				produce(i, coefOfPredator);
+				i->reproduce();
+			}
+			else
+			{
+				i->move(searchNeighbors(i, coefOfPredator), size);
+			}
+
+
+		}
 	}
 }
-
 void  Aquarium::addHerbivore(Herbivore* herbivore)
 {
 	if (((listOfHerbivore.size()+1)*coefOfHerbivore
@@ -129,10 +158,10 @@ std::map<Organism&, int> Aquarium::searchNeighbors(Organism* org, int coef)
 		for (auto u : listOfPredators)
 		{
 			coordinates posOfPredator = u->getLocation();
-			int result = wave(pos.second, pos.first, posOfPredator.second, posOfPredator.first, this->map, size.first, size.second);
+			int result = way(pos.second, pos.first, posOfPredator.second, posOfPredator.first);
 			if (result <= org->getRadOfView())
 			{
-				mapOfOrganism[*org] = result;
+				mapOfOrganism[*u] = result;
 			}
 		}
 	}
@@ -141,65 +170,139 @@ std::map<Organism&, int> Aquarium::searchNeighbors(Organism* org, int coef)
 		for (auto u : listOfHerbivore)
 		{
 			coordinates posOfPredator = u->getLocation();
-			int result = wave(pos.second, pos.first, posOfPredator.second, posOfPredator.first, this->map, size.first, size.second);
+			int result = way(pos.second, pos.first, posOfPredator.second, posOfPredator.first);
 			if (result <= org->getRadOfView())
 			{
-				mapOfOrganism[*org] = result;
+				mapOfOrganism[*u] = result;
 			}
 		}
 	}
 	return mapOfOrganism;
 }
 
-int Aquarium::wave(int x, int y, int exX, int exY, int** map, int n, int m)
+int Aquarium::way(int x1, int y1, int x2, int y2)
 {
-	bool fl = true;
-	int temp = 2;
-	map[x][y] = 2;
-	while (map[exX][exY] == 0 && fl)
-	{
-		fl = false;
+	return sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1));
+}
 
-		for (int i = 0; i < n; i++)
+bool Aquarium::produce(Organism* org, int coef)
+{
+	coordinates pos = org->getLocation();
+	if (coef == coefOfHerbivore)
+	{
+		for (auto u : listOfHerbivore)
 		{
-			for (int j = 0; j < m; j++)
+			coordinates posOfHerbivore = u->getLocation();
+			int result = way(pos.second, pos.first, posOfHerbivore.second, posOfHerbivore.first);
+			if (result <= org->getRadOfDisp())
 			{
-				if (map[i][j] == temp)
+				int chance = rand() % 3 + 3;
+				while (chance)
 				{
-					if (j > 0 && map[i][j - 1] == 0)
-					{
-						map[i][j - 1] = temp + 1;
-						fl = true;
-					}
-					if (i > 0 && map[i - 1][j] == 0)
-					{
-						map[i - 1][j] = temp + 1;
-						fl = true;
-					}
-					if (j < n - 1 && map[i][j + 1] == 0)
-					{
-						map[i][j + 1] = temp + 1;
-						fl = true;
-					}
-					if (i < n - 1 && map[i + 1][j] == 0)
-					{
-						map[i + 1][j] = temp + 1;
-						fl = true;
-					}
+					int radOfView = rand() % 3 + 6;
+					int radOfDisp = rand() % 2 + 4;
+					int lifeTime = rand() % 3 + 8;
+					int eattime = rand() % 1 + 4;
+					int location = rand() % 4 + 1;
+					posOfHerbivore.first += location;
+					posOfHerbivore.second += location;
+					listOfHerbivore.push_back(&Herbivore(posOfHerbivore, radOfDisp, radOfView, lifeTime, eattime));
+					chance--;
 				}
+				u->reproduce();
+				org->moveDisl(u->getLocation());
+				return true;
 			}
 		}
-		temp++;
 	}
-	return temp;
+	else if (coef == coefOfPredator)
+	{
+		for (auto u : listOfPredators)
+		{
+			coordinates posOfPredator = u->getLocation();
+			int result = way(pos.second, pos.first, posOfPredator.second, posOfPredator.first);
+			if (result <= org->getRadOfDisp())
+			{
+				int chance = rand() % 2 + 1;
+				while (chance)
+				{
+					int radOfView = rand() % 3 + 6;
+					int radOfDisp = rand() % 2 + 4;
+					int lifeTime = rand() % 3 + 8;
+					int eattime = rand() % 1 + 4;
+					int location = rand() % 4 + 1;
+					posOfPredator.first += location;
+					posOfPredator.second += location;
+					listOfPredators.push_back(&Predator(posOfPredator, radOfDisp, radOfView, lifeTime, eattime));
+					chance--;
+				}
+				u->reproduce();
+				org->moveDisl(u->getLocation());
+				return true;
+			}
+		}
+	}
+	else
+	{
+		for (auto u : listOfPlanktons)
+		{
+			coordinates posOfPlanktons = u->getLocation();
+			int result = way(pos.second, pos.first, posOfPlanktons.second, posOfPlanktons.first);
+			if (result <= org->getRadOfDisp())
+			{
+				int chance = rand() % 2 + 1;
+				while (chance)
+				{
+					int radOfView = rand() % 3 + 6;
+					int radOfDisp = rand() % 2 + 4;
+					int lifeTime = rand() % 3 + 8;
+					int location = rand() % 4 + 1;
+					posOfPlanktons.first += location;
+					posOfPlanktons.second += location;
+					listOfPlanktons.push_back(&Plankton(posOfPlanktons, radOfDisp, radOfView, lifeTime));
+					chance--;
+				}
+				u->reproduce();
+				org->moveDisl(u->getLocation());
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
-bool Aquarium::produce()
+bool Aquarium::eating(Organism* org, int coef)
 {
-
-}
-
-bool Aquarium::eating()
-{
-
+	coordinates pos = org->getLocation();
+	if (coef == coefOfHerbivore)
+	{
+		for (auto u : listOfPlanktons)
+		{
+			coordinates posOfPlankton = u->getLocation();
+			int result = way(pos.second, pos.first, posOfPlankton.second, posOfPlankton.first);
+			if (result <= org->getRadOfDisp())
+			{
+				std::swap(u, listOfPlanktons.back());
+				listOfPlanktons.pop_back();
+				org->moveDisl(u->getLocation());
+				return true;
+			}
+		}
+	}
+	else if (coef == coefOfPredator)
+	{
+		for (auto u : listOfHerbivore)
+		{
+			coordinates posOfPredator = u->getLocation();
+			int result = way(pos.second, pos.first, posOfPredator.second, posOfPredator.first);
+			if (result <= org->getRadOfDisp())
+			{
+				std::swap(u, listOfHerbivore.back());
+				listOfHerbivore.pop_back();
+				org->moveDisl(u->getLocation());
+				return true;
+			}
+		}
+	}
+	return false;
 }
