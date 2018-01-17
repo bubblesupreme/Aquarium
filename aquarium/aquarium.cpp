@@ -200,7 +200,7 @@ bool Aquarium::produce(Organism* org, int coef)
 		{
 			coordinates posOfHerbivore = u->getLocation();
 			int result = way(pos.second, pos.first, posOfHerbivore.second, posOfHerbivore.first);
-			if (result <= org->getRadOfDisp())
+			if ((result <= org->getRadOfDisp()) && (u->getReprodaction() >= u->getPauseReprodaction()))
 			{
 				int chance = rand() % 3 + 3;
 				while (chance)
@@ -227,7 +227,7 @@ bool Aquarium::produce(Organism* org, int coef)
 		{
 			coordinates posOfPredator = u->getLocation();
 			int result = way(pos.second, pos.first, posOfPredator.second, posOfPredator.first);
-			if (result <= org->getRadOfDisp())
+			if ((result <= org->getRadOfDisp()) && (u->getReprodaction() >= u->getPauseReprodaction()))
 			{
 				int chance = rand() % 2 + 1;
 				while (chance)
@@ -254,7 +254,7 @@ bool Aquarium::produce(Organism* org, int coef)
 		{
 			coordinates posOfPlanktons = u->getLocation();
 			int result = way(pos.second, pos.first, posOfPlanktons.second, posOfPlanktons.first);
-			if (result <= org->getRadOfDisp())
+			if ((result <= org->getRadOfDisp()) && (u->getReprodaction() >= u->getPauseReprodaction()))
 			{
 				int chance = rand() % 2 + 1;
 				while (chance)
