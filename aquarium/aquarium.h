@@ -6,38 +6,22 @@
 #include "Predator.h"
 #include <vector>
 
-/*
-Coefficient of Plancton 1
-Coefficient of Herbivore 3
-Coefficient of Predator 4
-*/
-
 class Aquarium
 {
 public:
 	Aquarium(coordinates size);
-	Aquarium(coordinates size, std::vector<Herbivore*> listOfHerbivore,
-		std::vector<Plankton*> listOfPlanktons, std::vector<Predator*> listOfPredators);
+	Aquarium(coordinates size, std::vector<Organism*> org);
 	~Aquarium();
 	void show();
 	void update();
-	void addHerbivore(Herbivore* herbivore);
-	void addPlankton(Plankton* plankton);
-	void addPredator(Predator* predator);
-
-
+	void addOrganism(Organism* org);
 private:
-	bool produce(Organism*, int coef);
-	bool eating(Organism*, int coef);
-	std::map<Organism&, int> searchNeighbors(Organism*, int coef);
-	int way(int x1, int y1, int x2, int y2);
-	const std::pair<int, int> size;
-	std::vector<Herbivore*> listOfHerbivore;
-	std::vector<Plankton*> listOfPlanktons;
-	std::vector<Predator*> listOfPredators;
+	coordinates size;
+	std::vector<Organism*> listOfOrganisms;
 	const int coefOfPlancton = 1;
 	const int coefOfHerbivore = 3;
 	const int coefOfPredator = 4;
 };
 
 #endif
+
