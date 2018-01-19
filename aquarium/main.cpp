@@ -1,7 +1,8 @@
 #include "aquarium.h"
 #include "Drawer.h"
 #include "SFML\Graphics.hpp"
-int main()
+
+void main()
 {
 	std::vector<Organism*> listOfOrganisms;
 
@@ -57,18 +58,71 @@ int main()
 	size.first = 100;
 	size.second = 100;
 	Aquarium aq(size, listOfOrganisms);
-	aq.show();
-	sf::RenderWindow window(sf::VideoMode(size.first, size.second), "Aquarium");
+	sf::RenderWindow window(sf::VideoMode(858, 600, 32), "Aquarium", sf::Style::Close);
+	window.setFramerateLimit(10);
+	sf::Event e;
+	const int UPDATING = 0, MODIFYING = 1;
+	int state = MODIFYING;
+	Aquarium aquarium(coordinates(40, 30));
 	std::string mapPath = "map.png";
-	Drawer aquaDraw(&window,size,mapPath);
-	while (window.isOpen())
-	{
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
+	Drawer aquaDraw(&window, size, mapPath);
+	while (window.isOpen()) {
+
+		while (window.pollEvent(e)) {
+			if (e.type == sf::Event::Closed) {
 				window.close();
+			}
+
+			if (e.type == sf::Event::KeyPressed) {
+
+				switch (e.key.code) {
+				case sf::Keyboard::Escape:
+					window.close();
+					break;
+
+				case sf::Keyboard::Return:
+					switch (state) {
+
+					case UPDATING:
+						state = MODIFYING;
+						break;
+
+					case MODIFYING:
+						state = UPDATING;
+
+					default:
+						break;
+					}
+					break;
+
+				case sf::Keyboard::Right: {
+					state = UPDATING;
+					break;
+				}
+
+				default:
+					break;
+				}
+			}
+
+			if (e.type == sf::Event::KeyReleased) {
+
+				switch (e.key.code) {
+
+				case sf::Keyboard::Right: {
+					state = MODIFYING;
+					break;
+				}
+				default:
+					break;
+				}
+			}
 		}
+
+		if (state == UPDATING) {
+			aquarium.update();
+		}
+
 		window.clear();
 		aquaDraw.drawAquarium();
 		aquaDraw.drawOrganisms(aq.getListOfOrganisms());

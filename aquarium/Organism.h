@@ -2,7 +2,10 @@
 #define ORGANISM_H
 
 #include "Exception.h"
-#include <map>
+#include "Constants.h"
+#include "Sprites.h"
+//#include <SFML\Graphics.hpp>
+#include <vector>
 #include <cstdlib>
 
 typedef std::pair<int, int> coordinates;
@@ -11,24 +14,27 @@ class Organism
 {
 public:
 	Organism(coordinates location_, int radOfDisp_, int radOfView_,
-		int lifeTime_,int pauseReprodaction_);
-	virtual ~Organism() = 0;
-	void moveDisl(coordinates dislocation);
-	virtual void move(std::map<Organism&, int> neighbors, coordinates sizeAqua) = 0;
-	void life();
-	void reproduce();
-	int getRadOfView()const;
-	int getRadOfDisp()const;
-	int getLifeTime() const;
+		int lifeTime_, int pauseReprodaction_, int coef_, sf::Sprite body_);
+	virtual ~Organism();
+	virtual void update(std::vector<Organism*>& organisms, coordinates sizeAqua) = 0;
+	virtual void move(std::vector<Organism*>& organisms, coordinates sizeAqua) = 0;
+	void died(std::vector<Organism*>& organisms);
+	void reproductionUp();
+	int getCoef() const;
 	int getReprodaction() const;
 	int getPauseReprodaction() const;
+	sf::Sprite getSprite() const;
 	coordinates getLocation()const;
 protected:
+	sf::Sprite body;
+	int way(coordinates neighbors);
+	virtual bool reproduce(std::vector<Organism*>& organisms) = 0;
 	int lifeTime;
-	int reprodaction;
+	int reproduction;
 	const int pauseReprodaction;
 	const int radOfView;
 	const int radOfDisp;
+	const int coef;
 	coordinates location;
 };
 

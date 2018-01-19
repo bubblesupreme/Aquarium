@@ -28,9 +28,10 @@ void Aquarium::update()
 {
 	for (auto i : listOfOrganisms)
 	{
-		i->update(listOfOrganisms);
+		i->update(listOfOrganisms,size);
 	}
 }
+
 void  Aquarium::addOrganism(Organism* organism)
 {
 	int sum = organism->getCoef();
@@ -71,5 +72,8 @@ void Aquarium::show()
 	std::cout << "Pr" << pred << std::endl;
 }
 
-
+std::vector<Organism*> Aquarium::getListOfOrganisms() 
+{ 
+	return listOfOrganisms; 
+}
 
