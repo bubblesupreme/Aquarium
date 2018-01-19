@@ -1,8 +1,7 @@
 #ifndef DRAWER_H
 #define DRAWER_H
 #include "aquarium.h"
-#include <vector>
-#include <SFML\Graphics.hpp>
+
 class Drawer
 {
 public:

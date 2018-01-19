@@ -4,15 +4,15 @@
 
 Herbivore::Herbivore(coordinates location_, int radOfDisp_, int radOfview_,
 	int lifeTime_, int eatTime_) :Fish(location_, radOfDisp_, radOfview_,
-		lifeTime_, eatTime_,3)
+		lifeTime_, eatTime_, 3, coefOfHerbivore)
 {
-	if ((radOfView > 9) || (radOfView < 6)||
-		(radOfDisp > 6) || (radOfDisp < 4)||
+	if ((radOfView > 9) || (radOfView < 6) ||
+		(radOfDisp > 6) || (radOfDisp < 4) ||
 		(lifeTime > 11) || (lifeTime < 8) ||
 		(eatTime > 5) || (eatTime < 4) ||
 		(radOfDisp > radOfView))
 	{
-		throw Exception(2);
+		throw Exception(1);
 	}
 }
 
@@ -20,11 +20,78 @@ Herbivore::Herbivore(coordinates location_, int radOfDisp_, int radOfview_,
 Herbivore::~Herbivore()
 {}
 
-void Herbivore::move(std::map<Organism&, int> neighbors, coordinates sizeAqua)
+void Herbivore::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
 {
-	if (neighbors.size() != 0)
+	lifeTime--;
+	starvation--;
+	reproduction++;
+	if (starvation == 0 || lifeTime == 0)
 	{
-		float minDist = (radOfDisp * 2 + location.first + location.second)*neighbors.size();
+		died(organisms);
+		return;
+	}
+	if (eatTime / starvation > 0.5)
+	{
+		if (eat(organisms))
+		{
+			return;
+		}
+	}
+	if (reproduction >= pauseReprodaction)
+	{
+		if (reproduce(organisms))
+		{
+			return;
+		}
+	}
+	move(organisms, sizeAqua);
+}
+
+bool Herbivore::eat(std::vector<Organism*>& organisms)
+{
+	for (auto u : organisms)
+	{
+		if ((u->getCoef() == coefOfPlancton) && (u != this))
+		{
+			if (radOfDisp >= way(u->getLocation()))
+			{
+				location = u->getLocation();
+				starvation = eatTime;
+				u->died(organisms);
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool Herbivore::reproduce(std::vector<Organism*>& organisms)
+{
+	for (auto u : organisms)
+	{
+		if ((u != this) && (coef == u->getCoef()) && (radOfDisp >= way(u->getLocation())) &&
+			(u->getReprodaction() > u->getPauseReprodaction()))
+		{
+			location = u->getLocation();
+			reproduction = 0;
+			u->reproductionUp();
+			int chance = rand() % 2 + 2;
+			while (chance)
+			{
+				organisms.push_back(&Herbivore(location, rand() % 2 + 4, rand() % 3 + 6, rand() % 3 + 8, rand() % 1 + 4));
+				chance--;
+			}
+			return true;
+		}
+	}
+	return false;
+}
+
+void Herbivore::move(std::vector<Organism*>& organisms, coordinates sizeAqua)
+{
+	if (organisms.size() == 1)
+	{
+		float maxDist = sizeAqua.first*sizeAqua.second;
 		coordinates newLoc(location.first, location.second);
 		for (int i = (-1)*radOfDisp; i <= radOfDisp; i++)
 		{
@@ -35,25 +102,28 @@ void Herbivore::move(std::map<Organism&, int> neighbors, coordinates sizeAqua)
 					if ((location.second + j <= sizeAqua.second) && (location.second + j >= 0))
 					{
 						int distance = 0;
-						for (auto it = neighbors.begin(); it != neighbors.end(); it++)
+						for (auto u : organisms)
 						{
-							distance = distance + fabs(it->first.getLocation().first - location.first + i)
-								+ fabs(it->first.getLocation().second - location.second + j);
+							if ((u != this) && (radOfView >= way(u->getLocation())) && (u->getCoef() == coefOfPredator))
+							{
+								distance += way(u->getLocation());
+							}
 						}
-						if (distance < minDist)
+						if (distance > maxDist)
 						{
-							minDist = distance;
+							maxDist = distance;
 							newLoc = coordinates(location.first + i, location.second + j);
 						}
 					}
 				}
 			}
+
+			location = newLoc;
 		}
-		moveDisl(newLoc);
 	}
 	else
 	{
-		/*int newx = rand() % radOfDisp;
+		int newx = rand() % radOfDisp;
 		if (newx > sizeAqua.first)
 		{
 			newx = sizeAqua.first;
@@ -63,7 +133,7 @@ void Herbivore::move(std::map<Organism&, int> neighbors, coordinates sizeAqua)
 		{
 			newy = sizeAqua.second;
 		}
-		moveDisl(coordinates(location.first + newx, location.second + newy));*/
+		location = coordinates(location.first + newx, location.second + newy);
 	}
 
 }

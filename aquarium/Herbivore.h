@@ -17,7 +17,11 @@ public:
 	Herbivore(coordinates location_, int radOfDisp_, int radOfview_,
 		int lifeTime_, int eatTime_);
 	virtual ~Herbivore();
-	virtual void move(std::map<Organism&, int> neighbors, coordinates sizeAqua) override;
+	virtual void update(std::vector<Organism*>& organisms, coordinates sizeAqua) override;
+private:
+	bool eat(std::vector<Organism*>& organisms) override;
+	virtual bool reproduce(std::vector<Organism*>& organisms) override;
+	virtual void move(std::vector<Organism*>& organisms, coordinates sizeAqua) override;
 };
 
 #endif

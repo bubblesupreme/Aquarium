@@ -1,23 +1,14 @@
 #include "Organism.h"
 
 Organism::Organism(coordinates location_, int radOfDisp_, int radOfView_,
-	int lifeTime_, int pauseReprodaction_) : lifeTime(lifeTime_), radOfDisp(radOfDisp_),
-	radOfView(radOfView_), pauseReprodaction(pauseReprodaction_), reprodaction(0) {};
+	int lifeTime_, int pauseReprodaction_, int coef_, sf::Sprite body_) 
+	: lifeTime(lifeTime_), radOfDisp(radOfDisp_), body(body_), radOfView(radOfView_),
+	pauseReprodaction(pauseReprodaction_), reproduction(0), coef(coef_) {};
 
-void Organism::moveDisl(coordinates dislocation)
-{
-	location = dislocation;
-};
 
-void Organism::life()
+void Organism::reproductionUp()
 {
-	lifeTime--;
-	reprodaction++;
-}
-
-void Organism::reproduce()
-{
-	reprodaction=0;
+	reproduction = 0;
 }
 
 int Organism::getPauseReprodaction() const
@@ -25,27 +16,43 @@ int Organism::getPauseReprodaction() const
 	return pauseReprodaction;
 }
 
-int Organism::getRadOfView()const
-{
-	return radOfView;
-};
-
-int Organism::getRadOfDisp()const
-{
-	return radOfDisp;
-};
-
-int Organism::getLifeTime()const
-{
-	return lifeTime;
-};
-
 int Organism::getReprodaction() const
 {
-	return reprodaction;
+	return reproduction;
 }
 
 coordinates Organism::getLocation()const
 {
 	return location;
-};
+}
+
+int Organism::getCoef() const
+{
+	return coef;
+}
+
+sf::Sprite Organism::getSprite() const
+{
+	return body;
+}
+
+void Organism::died(std::vector<Organism*>& organisms)
+{
+	for (auto i : organisms)
+	{
+		if (i == this)
+		{
+			std::swap(i, organisms.back());
+			organisms.pop_back();
+			this->~Organism();
+			return;
+		}
+	}
+}
+
+int Organism::way(coordinates neighbors)
+{
+	return sqrt((neighbors.first - location.first)*(neighbors.first - location.first) + (neighbors.second - location.second)*(neighbors.second - location.second));
+}
+
+
