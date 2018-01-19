@@ -7,3 +7,6 @@ Fish::Fish(coordinates location_, int radOfDisp_, int radOfview_,
 	: Organism(location_, radOfDisp_, radOfview_,
 		lifeTime_, pauseReprodaction_, coef, body_), eatTime(eatTime_)
 {}
+
+Fish::~Fish()
+{}

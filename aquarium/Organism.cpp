@@ -5,6 +5,8 @@ Organism::Organism(coordinates location_, int radOfDisp_, int radOfView_,
 	: lifeTime(lifeTime_), radOfDisp(radOfDisp_), body(body_), radOfView(radOfView_),
 	pauseReprodaction(pauseReprodaction_), reproduction(0), coef(coef_) {};
 
+Organism::~Organism()
+{}
 
 void Organism::reproductionUp()
 {

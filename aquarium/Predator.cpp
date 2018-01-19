@@ -4,7 +4,7 @@
 
 Predator::Predator(coordinates location_, int radOfDisp_, int radOfview_,
 	int lifeTime_, int eatTime_) :Fish(location_, radOfDisp_, radOfview_,
-		lifeTime_, eatTime_, 3, coefOfPredator)
+		lifeTime_, eatTime_, 3, coefOfPredator, PredatorMove)
 {
 	if ((radOfView > 7) || (radOfView < 6) ||
 		(radOfDisp > 7) || (radOfDisp < 6) ||
@@ -34,6 +34,7 @@ void Predator::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
 	{
 		if (eat(organisms))
 		{
+			body = PredatorEat;
 			return;
 		}
 	}
@@ -41,9 +42,11 @@ void Predator::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
 	{
 		if (reproduce(organisms))
 		{
+			body = PredatorReprod;
 			return;
 		}
 	}
+	body = PredatorMove;
 	move(organisms, sizeAqua);
 }
 

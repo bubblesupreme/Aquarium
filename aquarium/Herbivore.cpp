@@ -4,7 +4,7 @@
 
 Herbivore::Herbivore(coordinates location_, int radOfDisp_, int radOfview_,
 	int lifeTime_, int eatTime_) :Fish(location_, radOfDisp_, radOfview_,
-		lifeTime_, eatTime_, 3, coefOfHerbivore)
+		lifeTime_, eatTime_, 3, coefOfHerbivore,HerbivoreMove)
 {
 	if ((radOfView > 9) || (radOfView < 6) ||
 		(radOfDisp > 6) || (radOfDisp < 4) ||
@@ -34,6 +34,7 @@ void Herbivore::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
 	{
 		if (eat(organisms))
 		{
+			body = HerbivoreEat;
 			return;
 		}
 	}
@@ -41,9 +42,11 @@ void Herbivore::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
 	{
 		if (reproduce(organisms))
 		{
+			body = HerbivoreReprod;
 			return;
 		}
 	}
+	body = HerbivoreMove;
 	move(organisms, sizeAqua);
 }
 

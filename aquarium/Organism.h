@@ -3,7 +3,8 @@
 
 #include "Exception.h"
 #include "Constants.h"
-#include <SFML\Graphics.hpp>
+#include "Sprites.h"
+//#include <SFML\Graphics.hpp>
 #include <vector>
 #include <cstdlib>
 
@@ -14,7 +15,7 @@ class Organism
 public:
 	Organism(coordinates location_, int radOfDisp_, int radOfView_,
 		int lifeTime_, int pauseReprodaction_, int coef_, sf::Sprite body_);
-	virtual ~Organism() = 0;
+	virtual ~Organism();
 	virtual void update(std::vector<Organism*>& organisms, coordinates sizeAqua) = 0;
 	virtual void move(std::vector<Organism*>& organisms, coordinates sizeAqua) = 0;
 	void died(std::vector<Organism*>& organisms);

@@ -3,7 +3,7 @@
 
 Plankton::Plankton(coordinates location_, int radOfDisp_, int radOfview_,
 	int lifeTime_) :Organism(location_, radOfDisp_, radOfview_,
-		lifeTime_, 2, 1)
+		lifeTime_, 2, coefOfPlancton,PlanktonMove)
 {
 	if ((radOfView > 4) || (radOfView < 2) ||
 		(radOfDisp > 3) || (radOfDisp < 1) ||
@@ -31,9 +31,11 @@ void Plankton::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
 	{
 		if (reproduce(organisms))
 		{
+			body = PlanktonReprod;
 			return;
 		}
 	}
+	body = PlanktonMove;
 	move(organisms, sizeAqua);
 }
 
