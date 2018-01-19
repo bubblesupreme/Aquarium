@@ -71,7 +71,7 @@ int main()
 		}
 		window.clear();
 		aquaDraw.drawAquarium();
-		aquaDraw.drawOrganisms(listOfOrganisms);
+		aquaDraw.drawOrganisms(aq.getListOfOrganisms());
 		window.display();
 	}
 }
