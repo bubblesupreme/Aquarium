@@ -15,6 +15,7 @@ public:
 	void show();
 	void update();
 	void addOrganism(Organism* org);
+	std::vector<Organism*> getListOfOrganisms() { return listOfOrganisms; }
 private:
 	coordinates size;
 	std::vector<Organism*> listOfOrganisms;
@@ -24,4 +25,3 @@ private:
 };
 
 #endif
-
