@@ -1,10 +1,10 @@
 #include "aquarium.h"
-
+#include "Drawer.h"
+#include "SFML\Graphics.hpp"
 int main()
 {
-	std::vector<Herbivore*> listOfHerbivore;
-	std::vector<Plankton*> listOfPlanktons;
-	std::vector<Predator*> listOfPredators;
+	std::vector<Organism*> listOfOrganisms;
+
 	int chance = rand() % 4 + 3;
 	while (chance)
 	{
@@ -18,7 +18,7 @@ int main()
 		int location = rand() % 20 + 1;
 		posOfHerbivore.first += location;
 		posOfHerbivore.second += location;
-		listOfHerbivore.push_back(&Herbivore(posOfHerbivore, radOfDisp, radOfView, lifeTime, eattime));
+		listOfOrganisms.push_back(&Herbivore(posOfHerbivore, radOfDisp, radOfView, lifeTime, eattime));
 		chance--;
 	}
 	chance = rand() % 10 + 5;
@@ -34,7 +34,7 @@ int main()
 		int location = rand() % 20 + 1;
 		posOfPlankton.first += location;
 		posOfPlankton.second += location;
-		listOfPlanktons.push_back(&Plankton(posOfPlankton, radOfDisp, radOfView, lifeTime));
+		listOfOrganisms.push_back(&Plankton(posOfPlankton, radOfDisp, radOfView, lifeTime));
 		chance--;
 	}
 	chance = rand() % 3 + 2;
@@ -50,12 +50,28 @@ int main()
 		int location = rand() % 20 + 1;
 		posOfPredators.first += location;
 		posOfPredators.second += location;
-		listOfPredators.push_back(&Predator(posOfPredators, radOfDisp, radOfView, lifeTime, eattime));
+		listOfOrganisms.push_back(&Predator(posOfPredators, radOfDisp, radOfView, lifeTime, eattime));
 		chance--;
 	}
 	coordinates size;
 	size.first = 100;
 	size.second = 100;
-	Aquarium aq(size, listOfHerbivore, listOfPlanktons, listOfPredators);
+	Aquarium aq(size, listOfOrganisms);
 	aq.show();
+	sf::RenderWindow window(sf::VideoMode(size.first, size.second), "Aquarium");
+	std::string mapPath = "map.png";
+	Drawer aquaDraw(&window,size,mapPath);
+	while (window.isOpen())
+	{
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				window.close();
+		}
+		window.clear();
+		aquaDraw.drawAquarium();
+		aquaDraw.drawOrganisms(listOfOrganisms);
+		window.display();
+	}
 }
