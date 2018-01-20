@@ -9,18 +9,16 @@ void main()
 	std::vector<Organism*> listOfOrganisms;
 
 
-	int chance = rand() % 10 + 5;
+	int chance = rand() % 10 + 25;
 	while (chance)
 	{
 		coordinates posOfPlankton;
-		posOfPlankton.first = 0;
-		posOfPlankton.second = 0;
 		int radOfView = rand() % 2 + 2;
 		int radOfDisp = rand() % 2 + 1;
 		int lifeTime = rand() % 2 + 3;
 		int location = rand() % 20 + 1;
-		posOfPlankton.first += location;
-		posOfPlankton.second += location;
+		posOfPlankton.first = rand() % 40 + 0;
+		posOfPlankton.second = rand() % 30 + 0;
 		try
 		{
 			listOfOrganisms.push_back(new Plankton(posOfPlankton, radOfDisp, radOfView, lifeTime));
@@ -32,19 +30,16 @@ void main()
 		chance--;
 	}
 
-	chance = rand() % 4 + 3;
+	chance = rand() % 4 + 15;
 	while (chance)
 	{
 		coordinates posOfHerbivore;
-		posOfHerbivore.first = 0;
-		posOfHerbivore.second = 0;
 		int radOfView = rand() % 2 + 6;
 		int radOfDisp = rand() % 2 + 4;
 		int lifeTime = rand() % 3 + 8;
 		int eattime = rand() % 1 + 4;
-		int location = rand() % 20 + 1;
-		posOfHerbivore.first += location;
-		posOfHerbivore.second += location;
+		posOfHerbivore.first = rand() % 40 + 0;
+		posOfHerbivore.second = rand() % 30 + 0;
 		try
 		{
 			listOfOrganisms.push_back(new Herbivore(posOfHerbivore, radOfDisp, radOfView, lifeTime, eattime));
@@ -56,19 +51,17 @@ void main()
 		chance--;
 	}
 	
-	chance = rand() % 3 + 2;
+	chance = rand() % 3 + 13;
 	while (chance)
 	{
 		coordinates posOfPredators;
-		posOfPredators.first = 0;
-		posOfPredators.second = 0;
 		int radOfView = rand() % 4 + 6;
 		int radOfDisp = rand() % 1 + 6;
 		int lifeTime = rand() % 1 + 4;
 		int eattime = rand() % 1 + 2;
 		int location = rand() % 20 + 1;
-		posOfPredators.first += location;
-		posOfPredators.second += location;
+		posOfPredators.first = rand() % 40 + 0;
+		posOfPredators.second = rand() % 30 + 0;
 		try
 		{
 			listOfOrganisms.push_back(new Predator(posOfPredators, radOfDisp, radOfView, lifeTime, eattime));
@@ -87,7 +80,7 @@ void main()
 	window.setFramerateLimit(60);
 	sf::Event e;
 	const int UPDATING = 0, MODIFYING = 1;
-	int state = MODIFYING;
+	int state = UPDATING;
 	//Aquarium aquarium(coordinates(40, 30));
 	try
 	{
@@ -151,11 +144,8 @@ void main()
 				aq.update();
 				
 			}
-			aq.show();
+		//	aq.show();
 			window.clear();
-
-
-
 
 			aquaDraw.drawAquarium();
 			aquaDraw.drawOrganisms(aq.getListOfOrganisms());

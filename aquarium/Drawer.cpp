@@ -12,13 +12,17 @@ Drawer::Drawer(sf::RenderWindow& renderWindow, coordinates size, std::string aqu
 	this->size = size;
 
 }
-void Drawer::drawOrganisms(std::vector<Organism*> listOfOrganisms)
+void Drawer::drawOrganisms(std::vector<Organism*>& listOfOrganisms)
 {
-	for (auto i : listOfOrganisms)
+	std::cout << "\n\n"<<listOfOrganisms.size()<<"   ";
+	for(auto i=listOfOrganisms.begin();i!=listOfOrganisms.end();i++)
 	{
-		sf::Sprite organismSprite = i->getSprite();
-		organismSprite.setPosition((i->getLocation().second*20), (i->getLocation().first*20));
-		renderWindow->draw(organismSprite);
+		//organismSprite->setPosition(((*i)->getLocation().second*20), ((*i)->getLocation().first*20));
+		//(*i)->draw(renderWindow);
+		(*i)->getSprite()->setPosition(((*i)->getLocation().first * 20), ((*i)->getLocation().second * 20));
+		renderWindow->draw(*(*i)->getSprite());
+		//renderWindow->draw(organismSprite);
+		std::cout << (*i)->getLocation().first << "-"<< (*i)->getLocation().second<<"  ";
 	}
 }
 void Drawer::drawAquarium()
@@ -35,4 +39,5 @@ void Drawer::drawAquarium()
 	}*/
 	
 	renderWindow->draw(s_map);
+	
 }

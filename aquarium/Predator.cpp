@@ -4,7 +4,7 @@
 
 Predator::Predator(coordinates location_, int radOfDisp_, int radOfview_,
 	int lifeTime_, int eatTime_) :Fish(location_, radOfDisp_, radOfview_,
-		lifeTime_, eatTime_, 2, coefOfPredator, sprites.PredatorMove)
+		lifeTime_, eatTime_, 2, coefOfPredator, &sprites.PredatorMove)
 {
 	if ((radOfView > 10) || (radOfView < 6) ||
 		(radOfDisp > 7) || (radOfDisp < 6) ||
@@ -22,6 +22,7 @@ Predator::~Predator()
 
 bool Predator::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
 {
+	body = &sprites.PredatorMove;
 	lifeTime--;
 	starvation--;
 	reproduction++;
@@ -34,7 +35,7 @@ bool Predator::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
 	{
 		if (eat(organisms))
 		{
-			body = sprites.PredatorEat;
+			body = &sprites.PredatorEat;
 			return false;
 		}
 	}
@@ -42,11 +43,11 @@ bool Predator::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
 	{
 		if (reproduce(organisms))
 		{
-			body = sprites.PredatorReprod;
+			body = &sprites.PredatorReprod;
 			return false;
 		}
 	}
-	body = sprites.PredatorMove;
+	body = &sprites.PredatorMove;
 	move(organisms, sizeAqua);
 	return false;
 }
@@ -127,15 +128,23 @@ void Predator::move(std::vector<Organism*>& organisms, coordinates sizeAqua)
 	}
 	else
 	{
-		int newx = rand() % radOfDisp;
-		if (newx > sizeAqua.first)
+		int newx = rand() % radOfDisp - radOfDisp;
+		if (location.first + newx > sizeAqua.first)
 		{
-			newx = sizeAqua.first;
+			newx = sizeAqua.first - location.first;
 		}
-		int newy = rand() % radOfDisp;
-		if (newy > sizeAqua.second)
+		if (location.first + newx <0)
 		{
-			newy = sizeAqua.second;
+			newx = 0 - location.first;
+		}
+		int newy = rand() % radOfDisp - radOfDisp;
+		if (location.second + newy > sizeAqua.second)
+		{
+			newy = sizeAqua.second - location.second;
+		}
+		if (location.second + newy <0)
+		{
+			newy = 0 - location.second;
 		}
 		location = coordinates(location.first + newx, location.second + newy);
 	}

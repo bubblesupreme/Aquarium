@@ -2,21 +2,21 @@
 #define SPRITES_H
 
 #include <SFML\Graphics.hpp>
+#include <iostream>
 
  class Sprites
 {
 public:
 	Sprites() 
 	{
-		
-		HerbivoreEatT.loadFromFile("HrbvEat.png", sf::IntRect(0, 0, 20, 20));
-		HerbivoreMoveT.loadFromFile("HrbvMove.png", sf::IntRect(0, 0, 20, 20));
-		HerbivoreReprodT.loadFromFile("HrbvReprod.png", sf::IntRect(0, 0, 20, 20));
-		PredatorEatT.loadFromFile("PrdEat.png", sf::IntRect(0, 0, 20, 20));
-		PredatorMoveT.loadFromFile("PrdMove.png", sf::IntRect(0, 0, 20, 20));
-		PredatorReprodT.loadFromFile("PrdReprod.png", sf::IntRect(0, 0, 20, 20));
-		PlanktonMoveT.loadFromFile("PlnkMove.png", sf::IntRect(0, 0, 20, 20));
-		PlanktonReprodT.loadFromFile("PlnkReprod.png", sf::IntRect(0, 0, 20, 20));
+		HerbivoreEatT.loadFromFile("HrbvEat.png");
+		HerbivoreMoveT.loadFromFile("HrbvMove.png");
+		HerbivoreReprodT.loadFromFile("HrbvReprod.png");
+		PredatorEatT.loadFromFile("PrdEat.png");
+		PredatorMoveT.loadFromFile("PrdMove.png");
+		PredatorReprodT.loadFromFile("PrdReprod.png");
+		PlanktonMoveT.loadFromFile("PlnkMove.png");
+		PlanktonReprodT.loadFromFile("PlnkReprod.png");
 		HerbivoreEat.setTexture(HerbivoreEatT);
 		HerbivoreMove.setTexture(HerbivoreMoveT);
 		HerbivoreReprod.setTexture(HerbivoreReprodT);
@@ -25,6 +25,14 @@ public:
 		PredatorReprod.setTexture(PredatorReprodT);
 		PlanktonMove.setTexture(PlanktonMoveT);
 		PlanktonReprod.setTexture(PlanktonReprodT);
+		HerbivoreEat.scale(0.3, 0.3);
+		HerbivoreMove.scale(0.3, 0.3);
+		HerbivoreReprod.scale(0.3, 0.3);
+		PredatorEat.scale(0.3, 0.3);
+		PredatorMove.scale(0.3, 0.3);
+		PredatorReprod.scale(0.3, 0.3);
+		PlanktonMove.scale(0.3, 0.3);
+		PlanktonReprod.scale(0.3, 0.3);
 	}
 	~Sprites(){}
 

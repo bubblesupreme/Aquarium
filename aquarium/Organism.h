@@ -15,7 +15,7 @@ class Organism
 {
 public:
 	Organism(coordinates location_, int radOfDisp_, int radOfView_,
-		int lifeTime_, int pauseReprodaction_, int coef_, sf::Sprite body_);
+		int lifeTime_, int pauseReprodaction_, int coef_, sf::Sprite* body_);
 	virtual ~Organism();
 	virtual bool update(std::vector<Organism*>& organisms, coordinates sizeAqua) = 0;
 	virtual void move(std::vector<Organism*>& organisms, coordinates sizeAqua) = 0;
@@ -24,10 +24,11 @@ public:
 	int getCoef() const;
 	int getReprodaction() const;
 	int getPauseReprodaction() const;
-	sf::Sprite getSprite() const;
+	sf::Sprite* getSprite() const;
 	coordinates getLocation()const;
+	
 protected:
-	sf::Sprite& body;
+	sf::Sprite* body;
 	int way(coordinates neighbors);
 	virtual bool reproduce(std::vector<Organism*>& organisms) = 0;
 	int lifeTime;
