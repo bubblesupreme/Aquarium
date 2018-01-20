@@ -33,7 +33,6 @@ void Aquarium::update()
 			i++;
 		//i->update(size);
 		//i->test();
-		std::cout << "   !" << listOfOrganisms.size() << std::endl;
 	}
 }
 
@@ -58,6 +57,7 @@ void Aquarium::show()
 	int fish = 0;
 	int plank = 0;
 	int pred = 0;
+	std::cout << "   !" << listOfOrganisms.size() << std::endl;
 	for (auto i : listOfOrganisms)
 	{
 		if (i->getCoef() == coefOfHerbivore)

@@ -1,6 +1,5 @@
 #include "aquarium.h"
 #include "Drawer.h"
-#include "SFML\Graphics.hpp"
 #include <iostream>
 #include "Plankton.h"
 #include "Herbivore.h"
@@ -81,14 +80,14 @@ void main()
 		chance--;
 	}
 	coordinates size;
-	size.first = 30;
-	size.second = 40;
+	size.first = 40;
+	size.second = 30;
 	
-	sf::RenderWindow window(sf::VideoMode(858, 600, 32), "Aquarium", sf::Style::Close);
+	sf::RenderWindow window(sf::VideoMode(800, 600), "Aquarium", sf::Style::Close);
 	window.setFramerateLimit(60);
 	sf::Event e;
 	const int UPDATING = 0, MODIFYING = 1;
-	int state = UPDATING;
+	int state = MODIFYING;
 	//Aquarium aquarium(coordinates(40, 30));
 	try
 	{
@@ -154,6 +153,10 @@ void main()
 			}
 			aq.show();
 			window.clear();
+
+
+
+
 			aquaDraw.drawAquarium();
 			aquaDraw.drawOrganisms(aq.getListOfOrganisms());
 			window.display();

@@ -27,7 +27,7 @@ public:
 	sf::Sprite getSprite() const;
 	coordinates getLocation()const;
 protected:
-	sf::Sprite body;
+	sf::Sprite& body;
 	int way(coordinates neighbors);
 	virtual bool reproduce(std::vector<Organism*>& organisms) = 0;
 	int lifeTime;
@@ -37,6 +37,7 @@ protected:
 	const int radOfDisp;
 	const int coef;
 	coordinates location;
+	Sprites sprites;
 };
 
 #endif

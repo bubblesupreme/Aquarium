@@ -14,5 +14,7 @@ private:
 	sf::RenderWindow* renderWindow;
 	coordinates size;
 	sf::Sprite s_map;
+	sf::Image map_image;
+	sf::Texture map;
 };
 #endif DRAWER_H

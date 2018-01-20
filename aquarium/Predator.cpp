@@ -4,7 +4,7 @@
 
 Predator::Predator(coordinates location_, int radOfDisp_, int radOfview_,
 	int lifeTime_, int eatTime_) :Fish(location_, radOfDisp_, radOfview_,
-		lifeTime_, eatTime_, 2, coefOfPredator, PredatorMove)
+		lifeTime_, eatTime_, 2, coefOfPredator, sprites.PredatorMove)
 {
 	if ((radOfView > 10) || (radOfView < 6) ||
 		(radOfDisp > 7) || (radOfDisp < 6) ||
@@ -34,7 +34,7 @@ bool Predator::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
 	{
 		if (eat(organisms))
 		{
-			body = PredatorEat;
+			body = sprites.PredatorEat;
 			return false;
 		}
 	}
@@ -42,11 +42,11 @@ bool Predator::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
 	{
 		if (reproduce(organisms))
 		{
-			body = PredatorReprod;
+			body = sprites.PredatorReprod;
 			return false;
 		}
 	}
-	body = PredatorMove;
+	body = sprites.PredatorMove;
 	move(organisms, sizeAqua);
 	return false;
 }
