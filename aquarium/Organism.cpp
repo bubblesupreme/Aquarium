@@ -40,12 +40,11 @@ sf::Sprite Organism::getSprite() const
 
 void Organism::died(std::vector<Organism*>& organisms)
 {
-	for (auto i : organisms)
+	for (auto i=organisms.begin();i!=organisms.end();i++)
 	{
-		if (i == this)
+		if (*i == this)
 		{
-			std::swap(i, organisms.back());
-			organisms.pop_back();
+			organisms.erase(i);
 			this->~Organism();
 			return;
 		}

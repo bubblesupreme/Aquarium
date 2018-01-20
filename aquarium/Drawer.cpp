@@ -3,7 +3,7 @@
 Drawer::~Drawer()
 {
 }
-Drawer::Drawer(sf::RenderWindow* renderWindow, coordinates size, std::string aquaImagePath)
+Drawer::Drawer(sf::RenderWindow& renderWindow, coordinates size, std::string aquaImagePath)
 {
 	sf::Image map_image;
 	map_image.loadFromFile(aquaImagePath);
@@ -11,7 +11,7 @@ Drawer::Drawer(sf::RenderWindow* renderWindow, coordinates size, std::string aqu
 	map.loadFromImage(map_image);
 	sf::Sprite s_map;
 	s_map.setTexture(map);
-	this->renderWindow = renderWindow;
+	this->renderWindow = &renderWindow;
 	this->size = size;
 }
 void Drawer::drawOrganisms(std::vector<Organism*> listOfOrganisms)

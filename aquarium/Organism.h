@@ -7,6 +7,7 @@
 //#include <SFML\Graphics.hpp>
 #include <vector>
 #include <cstdlib>
+#include <iostream>
 
 typedef std::pair<int, int> coordinates;
 
@@ -16,7 +17,7 @@ public:
 	Organism(coordinates location_, int radOfDisp_, int radOfView_,
 		int lifeTime_, int pauseReprodaction_, int coef_, sf::Sprite body_);
 	virtual ~Organism();
-	virtual void update(std::vector<Organism*>& organisms, coordinates sizeAqua) = 0;
+	virtual bool update(std::vector<Organism*>& organisms, coordinates sizeAqua) = 0;
 	virtual void move(std::vector<Organism*>& organisms, coordinates sizeAqua) = 0;
 	void died(std::vector<Organism*>& organisms);
 	void reproductionUp();

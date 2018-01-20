@@ -6,7 +6,7 @@ Herbivore::Herbivore(coordinates location_, int radOfDisp_, int radOfview_,
 	int lifeTime_, int eatTime_) :Fish(location_, radOfDisp_, radOfview_,
 		lifeTime_, eatTime_, 3, coefOfHerbivore,HerbivoreMove)
 {
-	if ((radOfView > 9) || (radOfView < 6) ||
+	if ((radOfView > 8) || (radOfView < 6) ||
 		(radOfDisp > 6) || (radOfDisp < 4) ||
 		(lifeTime > 11) || (lifeTime < 8) ||
 		(eatTime > 5) || (eatTime < 4) ||
@@ -20,7 +20,7 @@ Herbivore::Herbivore(coordinates location_, int radOfDisp_, int radOfview_,
 Herbivore::~Herbivore()
 {}
 
-void Herbivore::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
+bool Herbivore::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
 {
 	lifeTime--;
 	starvation--;
@@ -28,14 +28,14 @@ void Herbivore::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
 	if (starvation == 0 || lifeTime == 0)
 	{
 		died(organisms);
-		return;
+		return true;
 	}
 	if (eatTime / starvation > 0.5)
 	{
 		if (eat(organisms))
 		{
 			body = HerbivoreEat;
-			return;
+			return false;
 		}
 	}
 	if (reproduction >= pauseReprodaction)
@@ -43,11 +43,12 @@ void Herbivore::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
 		if (reproduce(organisms))
 		{
 			body = HerbivoreReprod;
-			return;
+			return false;
 		}
 	}
 	body = HerbivoreMove;
 	move(organisms, sizeAqua);
+	return false;
 }
 
 bool Herbivore::eat(std::vector<Organism*>& organisms)
@@ -78,10 +79,10 @@ bool Herbivore::reproduce(std::vector<Organism*>& organisms)
 			location = u->getLocation();
 			reproduction = 0;
 			u->reproductionUp();
-			int chance = rand() % 2 + 2;
+			int chance = rand() % 3 + 2;
 			while (chance)
 			{
-				organisms.push_back(&Herbivore(location, rand() % 2 + 4, rand() % 3 + 6, rand() % 3 + 8, rand() % 1 + 4));
+				organisms.push_back(new Herbivore(location, rand() % 2 + 4, rand() % 2 + 6, rand() % 3 + 8, rand() % 1 + 4));
 				chance--;
 			}
 			return true;

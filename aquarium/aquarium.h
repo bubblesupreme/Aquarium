@@ -1,9 +1,7 @@
 #ifndef AQUARIUM_H
 #define AQUARIUM_H
 
-#include "Herbivore.h"
-#include "Plankton.h"
-#include "Predator.h"
+#include "Organism.h"
 #include "Constants.h"
 
 class Aquarium

@@ -1,7 +1,6 @@
 #include "aquarium.h"
-#include <iostream>
 #include <cstdlib>
-
+#include "Plankton.h"
 Aquarium::Aquarium(coordinates size) :size(size){}
 
 Aquarium::Aquarium(coordinates size, std::vector<Organism*> org)
@@ -26,9 +25,15 @@ Aquarium::~Aquarium()
 
 void Aquarium::update()
 {
-	for (auto i : listOfOrganisms)
+	
+	for (auto i=1; i< listOfOrganisms.size();i)
 	{
-		i->update(listOfOrganisms,size);
+//		i->move(listOfOrganisms, size);
+		if (!(listOfOrganisms[i]->update(listOfOrganisms, size)))
+			i++;
+		//i->update(size);
+		//i->test();
+		std::cout << "   !" << listOfOrganisms.size() << std::endl;
 	}
 }
 
@@ -43,6 +48,7 @@ void  Aquarium::addOrganism(Organism* organism)
 			throw Exception(4);
 		}
 	}
+
 	listOfOrganisms.push_back(organism);
 	
 }
@@ -67,12 +73,12 @@ void Aquarium::show()
 			pred += 1;
 		}
 	}
-	std::cout << "F" << fish << std::endl;
+	std::cout << "\nF" << fish << std::endl;
 	std::cout << "Pl" << plank << std::endl;
 	std::cout << "Pr" << pred << std::endl;
 }
 
-std::vector<Organism*> Aquarium::getListOfOrganisms() 
+std::vector<Organism*> Aquarium::getListOfOrganisms()
 { 
 	return listOfOrganisms; 
 }

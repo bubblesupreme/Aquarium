@@ -12,31 +12,33 @@ Plankton::Plankton(coordinates location_, int radOfDisp_, int radOfview_,
 	{
 		throw Exception(1);
 	}
+	
 }
 
 
 Plankton::~Plankton()
 {}
 
-void Plankton::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
+bool Plankton::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
 {
 	lifeTime--;
 	reproduction++;
 	if (lifeTime == 0)
 	{
 		died(organisms);
-		return;
+		return true;
 	}
 	if (reproduction >= pauseReprodaction)
 	{
 		if (reproduce(organisms))
 		{
 			body = PlanktonReprod;
-			return;
+			return false;
 		}
 	}
 	body = PlanktonMove;
 	move(organisms, sizeAqua);
+	return false;
 }
 
 bool Plankton::reproduce(std::vector<Organism*>& organisms)
@@ -49,10 +51,10 @@ bool Plankton::reproduce(std::vector<Organism*>& organisms)
 			location = u->getLocation();
 			reproduction = 0;
 			u->reproductionUp();
-			int chance = rand() % 2 + 3;
+			int chance = rand() % 2 + 5;
 			while (chance)
 			{
-				organisms.push_back(&Plankton(location, rand() % 2 + 1, rand() % 2 + 2, rand() % 5 + 3));
+				organisms.push_back(new Plankton(location, rand() % 2 + 1, rand() % 2 + 2, rand() % 2 + 3));
 				chance--;
 			}
 			return true;

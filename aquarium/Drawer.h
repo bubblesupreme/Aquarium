@@ -5,7 +5,7 @@
 class Drawer
 {
 public:
-	Drawer(sf::RenderWindow* renderWindow, coordinates coord, std::string aquaImagePath);
+	Drawer(sf::RenderWindow& renderWindow, coordinates coord, std::string aquaImagePath);
 	void drawOrganisms(std::vector<Organism*> organisms);
 	void drawAquarium(
 	);

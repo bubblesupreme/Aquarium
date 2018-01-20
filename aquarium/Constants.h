@@ -1,8 +1,8 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-const int coefOfPlancton = 1;
-const int coefOfHerbivore = 3;
-const int coefOfPredator = 4;
+static const int coefOfPlancton = 1;
+static const int coefOfHerbivore = 3;
+static const int coefOfPredator = 4;
 
 #endif

@@ -3,7 +3,7 @@
 
 #include "Fish.h"
 
-/*  radOfView: 6-9
+/*  radOfView: 6-8
     radOfDisp: 4-6
     lifeTime: 8-11 days
 	eatTime: 4-5 days
@@ -17,7 +17,7 @@ public:
 	Herbivore(coordinates location_, int radOfDisp_, int radOfview_,
 		int lifeTime_, int eatTime_);
 	virtual ~Herbivore();
-	virtual void update(std::vector<Organism*>& organisms, coordinates sizeAqua) override;
+	virtual bool update(std::vector<Organism*>& organisms, coordinates sizeAqua) override;
 private:
 	bool eat(std::vector<Organism*>& organisms) override;
 	virtual bool reproduce(std::vector<Organism*>& organisms) override;

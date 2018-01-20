@@ -17,7 +17,8 @@ public:
 	Plankton(coordinates location_, int radOfDisp_, int radOfview_,
 		int lifeTime_);
 	virtual ~Plankton();
-	virtual void update(std::vector<Organism*>& organisms, coordinates sizeAqua) override;
+	//using Organism::update;
+	virtual bool update(std::vector<Organism*>& organisms, coordinates sizeAqua) override;
 private:
 	virtual bool reproduce(std::vector<Organism*>& organisms) override;
 	virtual void move(std::vector<Organism*>& organisms, coordinates sizeAqua) override;
