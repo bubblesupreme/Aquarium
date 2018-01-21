@@ -54,42 +54,62 @@ bool Herbivore::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
 
 bool Herbivore::eat(std::vector<Organism*>& organisms)
 {
+	std::vector<Organism*> neighbors;
+
 	for (auto u : organisms)
 	{
 		if ((u->getCoef() == coefOfPlancton) && (u != this))
 		{
 			if (radOfDisp >= way(u->getLocation()))
 			{
-				location = u->getLocation();
-				starvation = eatTime;
-				u->died(organisms);
-				return true;
+				neighbors.push_back(u);
 			}
 		}
 	}
-	return false;
+	if (neighbors.size() > 0)
+	{
+		int choice = rand() % neighbors.size();
+		location = neighbors[choice]->getLocation();
+		starvation = eatTime;
+		neighbors[choice]->died(organisms);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 bool Herbivore::reproduce(std::vector<Organism*>& organisms)
 {
+	std::vector<Organism*> neighbors;
+
 	for (auto u : organisms)
 	{
 		if ((u != this) && (coef == u->getCoef()) && (radOfDisp >= way(u->getLocation())) &&
 			(u->getReprodaction() > u->getPauseReprodaction()))
 		{
-			location = u->getLocation();
-			reproduction = 0;
-			u->reproductionUp();
-			int chance = rand() % 3 + 2;
-			while (chance)
-			{
-				organisms.push_back(new Herbivore(location, rand() % 2 + 4, rand() % 2 + 6, rand() % 3 + 8, rand() % 1 + 4));
-				chance--;
-			}
-			return true;
+			neighbors.push_back(u);
 		}
 	}
-	return false;
+	if (neighbors.size() > 0)
+	{
+		int choice = rand() % neighbors.size();
+		location = neighbors[choice]->getLocation();
+		reproduction = 0;
+		neighbors[choice]->reproductionUp();
+		int chance = rand() % 3 + 2;
+		while (chance)
+		{
+			organisms.push_back(new Herbivore(location, rand() % 2 + 4, rand() % 2 + 6, rand() % 3 + 8, rand() % 1 + 4));
+			chance--;
+		}
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 void Herbivore::move(std::vector<Organism*>& organisms, coordinates sizeAqua)
