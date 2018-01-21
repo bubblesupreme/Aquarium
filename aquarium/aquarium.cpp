@@ -1,7 +1,6 @@
 #include "aquarium.h"
-#include <iostream>
 #include <cstdlib>
-
+#include "Plankton.h"
 Aquarium::Aquarium(coordinates size) :size(size){}
 
 Aquarium::Aquarium(coordinates size, std::vector<Organism*> org)
@@ -26,9 +25,15 @@ Aquarium::~Aquarium()
 
 void Aquarium::update()
 {
-	for (auto i : listOfOrganisms)
+	
+	for (auto i=1; i< listOfOrganisms.size();i)
 	{
-		i->update(listOfOrganisms,size);
+//		i->move(listOfOrganisms, size);
+		if (!(listOfOrganisms[i]->update(listOfOrganisms, coordinates(size.first-1,size.second-1))))
+			i++;
+		isFull();
+		//i->update(size);
+		//i->test();
 	}
 }
 
@@ -43,12 +48,12 @@ void  Aquarium::addOrganism(Organism* organism)
 			throw Exception(4);
 		}
 	}
+
 	listOfOrganisms.push_back(organism);
 	
 }
-
-void Aquarium::show()
-{
+bool Aquarium::isAlive()
+{	
 	int fish = 0;
 	int plank = 0;
 	int pred = 0;
@@ -67,13 +72,55 @@ void Aquarium::show()
 			pred += 1;
 		}
 	}
-	std::cout << "F" << fish << std::endl;
+	if (fish == 0 || plank == 0 || pred == 0)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+void Aquarium::show()
+{
+	int fish = 0;
+	int plank = 0;
+	int pred = 0;
+	std::cout << "   !" << listOfOrganisms.size() << std::endl;
+	for (auto i : listOfOrganisms)
+	{
+		if (i->getCoef() == coefOfHerbivore)
+		{
+			fish += 1;
+		}
+		else if (i->getCoef() == coefOfPlancton)
+		{
+			plank += 1;
+		}
+		else
+		{
+			pred += 1;
+		}
+	}
+	std::cout << "\nF" << fish << std::endl;
 	std::cout << "Pl" << plank << std::endl;
 	std::cout << "Pr" << pred << std::endl;
 }
 
-std::vector<Organism*> Aquarium::getListOfOrganisms() 
+std::vector<Organism*> Aquarium::getListOfOrganisms()
 { 
 	return listOfOrganisms; 
 }
-
+bool Aquarium::isFull()
+{
+	int sum = 0;
+	for (auto i : listOfOrganisms)
+	{
+		sum += i->getCoef();
+		if (sum > size.first*size.second)
+		{
+			throw Exception(4);
+		}
+	}
+	return false;
+}
