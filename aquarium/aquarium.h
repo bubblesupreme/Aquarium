@@ -1,9 +1,7 @@
 #ifndef AQUARIUM_H
 #define AQUARIUM_H
 
-#include "Herbivore.h"
-#include "Plankton.h"
-#include "Predator.h"
+#include "Organism.h"
 #include "Constants.h"
 
 class Aquarium
@@ -16,7 +14,10 @@ public:
 	void update();
 	void addOrganism(Organism* org);
 	std::vector<Organism*> getListOfOrganisms();
+	bool isAlive();
+
 private:
+	bool isFull();
 	coordinates size;
 	std::vector<Organism*> listOfOrganisms;
 };

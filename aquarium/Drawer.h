@@ -5,8 +5,8 @@
 class Drawer
 {
 public:
-	Drawer(sf::RenderWindow* renderWindow, coordinates coord, std::string aquaImagePath);
-	void drawOrganisms(std::vector<Organism*> organisms);
+	Drawer(sf::RenderWindow& renderWindow, coordinates coord, std::string aquaImagePath);
+	void drawOrganisms(std::vector<Organism*>& organisms);
 	void drawAquarium(
 	);
 	~Drawer();
@@ -14,5 +14,8 @@ private:
 	sf::RenderWindow* renderWindow;
 	coordinates size;
 	sf::Sprite s_map;
+	sf::Image map_image;
+	sf::Texture map;
+
 };
 #endif DRAWER_H
