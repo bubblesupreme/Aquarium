@@ -1,9 +1,16 @@
 #include "Organism.h"
 
 Organism::Organism(coordinates location_, int radOfDisp_, int radOfView_,
-	int lifeTime_, int pauseReprodaction_, int coef_, sf::Sprite body_) 
-	: lifeTime(lifeTime_), radOfDisp(radOfDisp_), body(body_), radOfView(radOfView_),
-	pauseReprodaction(pauseReprodaction_), reproduction(0), coef(coef_) {};
+	int lifeTime_, int pauseReprodaction_, int coef_, sf::Sprite* body_) 
+	: lifeTime(lifeTime_), radOfDisp(radOfDisp_), radOfView(radOfView_),
+	pauseReprodaction(pauseReprodaction_), reproduction(0), coef(coef_),location(location_)
+{
+	body = new sf::Sprite;
+	body = body_;
+	sprites=*(new Sprites);
+};
+
+
 
 Organism::~Organism()
 {}
@@ -33,19 +40,18 @@ int Organism::getCoef() const
 	return coef;
 }
 
-sf::Sprite Organism::getSprite() const
+sf::Sprite* Organism::getSprite() const
 {
 	return body;
 }
 
 void Organism::died(std::vector<Organism*>& organisms)
 {
-	for (auto i : organisms)
+	for (auto i=organisms.begin();i!=organisms.end();i++)
 	{
-		if (i == this)
+		if (*i == this)
 		{
-			std::swap(i, organisms.back());
-			organisms.pop_back();
+			organisms.erase(i);
 			this->~Organism();
 			return;
 		}
