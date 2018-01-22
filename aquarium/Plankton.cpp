@@ -24,7 +24,7 @@ bool Plankton::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
 	body = &sprites.PlanktonMove;
 	lifeTime--;
 	reproduction++;
-	if (lifeTime == 0)
+	if (lifeTime <= 0)
 	{
 		died(organisms);
 		return true;
@@ -44,24 +44,34 @@ bool Plankton::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
 
 bool Plankton::reproduce(std::vector<Organism*>& organisms)
 {
+	std::vector<Organism*> neighbors;
+
 	for (auto u : organisms)
 	{
 		if ((u != this) && (coef == u->getCoef()) && (radOfDisp >= way(u->getLocation())) &&
 			(u->getReprodaction() > u->getPauseReprodaction()))
 		{
-			location = u->getLocation();
-			reproduction = 0;
-			u->reproductionUp();
-			int chance = rand() % 2 + 5;
-			while (chance)
-			{
-				organisms.push_back(new Plankton(location, rand() % 2 + 1, rand() % 2 + 2, rand() % 2 + 3));
-				chance--;
-			}
-			return true;
+			neighbors.push_back(u);
 		}
 	}
-	return false;
+	if (neighbors.size() > 0)
+	{
+		int choice = rand() % neighbors.size();
+		location = neighbors[choice]->getLocation();
+		reproduction = 0;
+		neighbors[choice]->reproductionUp();
+		int chance = rand() % 2 + 5;
+		while (chance)
+		{
+			organisms.push_back(new Plankton(location, rand() % 2 + 1, rand() % 2 + 2, rand() % 2 + 3));
+			chance--;
+		}
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 void Plankton::move(std::vector<Organism*>& organisms, coordinates sizeAqua)

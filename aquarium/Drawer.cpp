@@ -15,7 +15,7 @@ Drawer::Drawer(sf::RenderWindow& renderWindow, coordinates size, std::string aqu
 void Drawer::drawOrganisms(std::vector<Organism*>& listOfOrganisms)
 {
 	std::cout << "\n\n"<<listOfOrganisms.size()<<"   ";
-	for(auto i=listOfOrganisms.begin();i!=listOfOrganisms.end();i++)
+	for(auto i=listOfOrganisms.rbegin();i!=listOfOrganisms.rend();i++)
 	{
 		//organismSprite->setPosition(((*i)->getLocation().second*20), ((*i)->getLocation().first*20));
 		//(*i)->draw(renderWindow);
