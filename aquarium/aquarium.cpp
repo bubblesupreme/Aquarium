@@ -26,8 +26,9 @@ Aquarium::~Aquarium()
 void Aquarium::update()
 {
 	
-	for (auto i=1; i< listOfOrganisms.size();i)
+	for (int i=0; i< listOfOrganisms.size();i)
 	{
+
 //		i->move(listOfOrganisms, size);
 		if (!(listOfOrganisms[i]->update(listOfOrganisms, coordinates(size.first-1,size.second-1))))
 			i++;

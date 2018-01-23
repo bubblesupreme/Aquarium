@@ -56,24 +56,24 @@ bool Predator::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
 
 bool Predator::eat(std::vector<Organism*>& organisms)
 {
-	std::vector<Organism*> neighbors;
-
-	for (auto u : organisms)
+	std::vector<Organism*>::iterator  choice = organisms.end();
+	int minWay = 10000;
+	for (auto u = organisms.begin(); u != organisms.end(); u++)
 	{
-		if ((u->getCoef() == coefOfHerbivore) && (u != this))
+		if (((*u)->getCoef() == coefOfHerbivore) && (*u != this))
 		{
-			if (radOfDisp >= way(u->getLocation()))
+			if (radOfDisp >= way((*u)->getLocation()) && way((*u)->getLocation()) < minWay)
 			{
-				neighbors.push_back(u);
+				minWay = way((*u)->getLocation());
+				choice = u;
 			}
 		}
 	}
-	if (neighbors.size() > 0)
+	if (choice!=organisms.end())
 	{
-		int choice = rand() % neighbors.size();
-		location = neighbors[choice]->getLocation();
+		location = (*choice)->getLocation();
 		starvation = eatTime;
-		neighbors[choice]->died(organisms);
+		(*choice)->died(organisms);
 		return true;
 	}
 	else
@@ -84,22 +84,25 @@ bool Predator::eat(std::vector<Organism*>& organisms)
 
 bool Predator::reproduce(std::vector<Organism*>& organisms)
 {
-	std::vector<Organism*> neighbors;
-
-	for (auto u : organisms)
+	int  choice = -1;
+	int minWay = 10000;
+	for (int i = 0; i<organisms.size(); i++)
 	{
-		if ((u != this) && (coef == u->getCoef()) && (radOfDisp >= way(u->getLocation())) &&
-			(u->getReprodaction() > u->getPauseReprodaction()))
+		if ((organisms[i] != this) && (coef == organisms[i]->getCoef()) && (radOfDisp >= way(organisms[i]->getLocation())) &&
+			(organisms[i]->getReprodaction() > organisms[i]->getPauseReprodaction()))
 		{
-			neighbors.push_back(u);
+			if (way(organisms[i]->getLocation()) < minWay)
+			{
+				minWay = way(organisms[i]->getLocation());
+				choice = i;
+			}
 		}
 	}
-	if (neighbors.size() > 0)
+	if (choice!=-1)
 	{
-		int choice = rand() % neighbors.size();
-		location = neighbors[choice]->getLocation();
+		location = organisms[choice]->getLocation();
 		reproduction = 0;
-		neighbors[choice]->reproductionUp();
+		organisms[choice]->reproductionUp();
 		int chance = rand() % 1 + 2;
 		while (chance)
 		{
