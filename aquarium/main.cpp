@@ -73,18 +73,18 @@ void main()
 		chance--;
 	}
 	coordinates size;
-	size.first = 60;
-	size.second = 45;
+	size.first = 40;
+	size.second = 30;
 	
-	sf::RenderWindow window(sf::VideoMode(1200, 900), "Aquarium", sf::Style::Close);
+	sf::RenderWindow window(sf::VideoMode(1280, 720), "Aquarium", sf::Style::Close);
 	window.setFramerateLimit(60);
 	sf::Event e;
 	const int UPDATING = 0, MODIFYING = 1;
-	int state = MODIFYING;
+	int state = UPDATING;
 	//Aquarium aquarium(coordinates(40, 30));
 	///died
 	sf::Font font;
-	font.loadFromFile("CyrilicOld.ttf");
+	font.loadFromFile("C:\\Users\\user\\Desktop\\Aquarium-master\\CyrilicOld.ttf");
 	sf::Text diedText("Aquarium died",font,90);
 	diedText.setFillColor(sf::Color::Red);
 	diedText.setPosition(size.first / 2,size.second/2);
@@ -150,21 +150,20 @@ void main()
 			window.clear();
 			if (state == UPDATING) 
 			{
-				aq.update();				
+				if (aq.isAlive())
+				{
+					aq.update();
+					aquaDraw.drawAquarium();
+					aquaDraw.drawOrganisms(aq.getListOfOrganisms());
+				}
+				else
+				{
+					window.draw(diedText);
+					window.display();
+					throw Exception(3);
+				}
+				
 			}
-
-			if (aq.isAlive())
-			{
-				aquaDraw.drawAquarium();
-				aquaDraw.drawOrganisms(aq.getListOfOrganisms());
-			}
-			else
-			{
-				window.draw(diedText);
-				window.display();
-				throw Exception(3);
-			}
-
 			aq.show();
 			window.display();
 			

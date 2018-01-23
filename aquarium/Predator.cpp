@@ -44,7 +44,6 @@ bool Predator::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
 		if (reproduce(organisms))
 		{
 			body = &sprites.PredatorReprod;
-
 			return false;
 		}
 	}
@@ -55,62 +54,42 @@ bool Predator::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
 
 bool Predator::eat(std::vector<Organism*>& organisms)
 {
-	std::vector<Organism*> neighbors;
-
 	for (auto u : organisms)
 	{
 		if ((u->getCoef() == coefOfHerbivore) && (u != this))
 		{
 			if (radOfDisp >= way(u->getLocation()))
 			{
-				neighbors.push_back(u);
+				location = u->getLocation();
+				starvation = eatTime;
+				u->died(organisms);
+				return true;
 			}
 		}
 	}
-	if (neighbors.size() > 0)
-	{
-		int choice = rand() % neighbors.size();
-		location = neighbors[choice]->getLocation();
-		starvation = eatTime;
-		neighbors[choice]->died(organisms);
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return false;
 }
 
 bool Predator::reproduce(std::vector<Organism*>& organisms)
 {
-	std::vector<Organism*> neighbors;
-
 	for (auto u : organisms)
 	{
 		if ((u != this) && (coef == u->getCoef()) && (radOfDisp >= way(u->getLocation())) &&
 			(u->getReprodaction() > u->getPauseReprodaction()))
 		{
-			neighbors.push_back(u);
+			location = u->getLocation();
+			reproduction = 0;
+			u->reproductionUp();
+			int chance = rand() % 1 + 2;
+			while (chance)
+			{
+				organisms.push_back(new Predator(location, rand() % 1 + 6, rand() % 4 + 6, rand() % 1 + 4, rand() % 1 + 2));
+				chance--;
+			}
+			return true;
 		}
 	}
-	if (neighbors.size() > 0)
-	{
-		int choice = rand() % neighbors.size();
-		location = neighbors[choice]->getLocation();
-		reproduction = 0;
-		neighbors[choice]->reproductionUp();
-		int chance = rand() % 1 + 2;
-		while (chance)
-		{
-			organisms.push_back(new Predator(location, rand() % 1 + 6, rand() % 4 + 6, rand() % 1 + 4, rand() % 1 + 2));
-			chance--;
-		}
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return false;
 }
 
 void Predator::move(std::vector<Organism*>& organisms, coordinates sizeAqua)
