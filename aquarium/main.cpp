@@ -7,7 +7,7 @@
 void main()
 {
 	std::vector<Organism*> listOfOrganisms;
-
+	coordinates size(28,28,28);
 
 	int chance = rand() % 10 + 25;
 	while (chance)
@@ -16,9 +16,9 @@ void main()
 		int radOfView = rand() % 2 + 2;
 		int radOfDisp = rand() % 2 + 1;
 		int lifeTime = rand() % 5 + 5;
-		posOfPlankton.first = rand() % 45 + 0;
-		posOfPlankton.second = rand() % 24 + 0;
-		posOfPlankton.third = rand() % 24 + 0;
+		posOfPlankton.first = rand() % size.first + 0;
+		posOfPlankton.second = rand() % size.second + 0;
+		posOfPlankton.third = rand() % size.third + 0;
 		try
 		{
 			listOfOrganisms.push_back(new Plankton(posOfPlankton, radOfDisp, radOfView, lifeTime));
@@ -38,9 +38,9 @@ void main()
 		int radOfDisp = rand() % 2 + 4;
 		int lifeTime = rand() % 10 + 20;
 		int eattime = rand() % 2 + 7;
-		posOfHerbivore.first = rand() % 45 + 0;
-		posOfHerbivore.second = rand() % 24 + 0;
-		posOfHerbivore.third = rand() % 24 + 0;
+		posOfHerbivore.first = rand() % size.first + 0;
+		posOfHerbivore.second = rand() % size.second + 0;
+		posOfHerbivore.third = rand() % size.third + 0;
 		try
 		{
 			listOfOrganisms.push_back(new Herbivore(posOfHerbivore, radOfDisp, radOfView, lifeTime, eattime));
@@ -60,9 +60,9 @@ void main()
 		int radOfDisp = rand() % 1 + 6;
 		int lifeTime = rand() % 5 + 15;
 		int eattime = rand() % 3 + 4;
-		posOfPredators.first = rand() % 45 + 0;
-		posOfPredators.second = rand() % 24 + 0;
-		posOfPredators.third = rand() % 24 + 0;
+		posOfPredators.first = rand() % size.first + 0;
+		posOfPredators.second = rand() % size.second + 0;
+		posOfPredators.third = rand() % size.third + 0;
 		try
 		{
 			listOfOrganisms.push_back(new Predator(posOfPredators, radOfDisp, radOfView, lifeTime, eattime));
@@ -73,13 +73,9 @@ void main()
 		}
 		chance--;
 	}
-	coordinates size;
-	size.first = 30;
-	size.second = 30;
-	size.third = 30;
 	
-	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Aquarium", sf::Style::Close);
-	window.setFramerateLimit(60);
+	sf::RenderWindow window(sf::VideoMode(980, 980), "Aquarium", sf::Style::Close);
+	window.setFramerateLimit(30);
 	sf::Event e;
 	const int UPDATING = 0, MODIFYING = 1;
 	int state = MODIFYING;
