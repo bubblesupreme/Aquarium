@@ -30,7 +30,7 @@ void Aquarium::update()
 	{
 
 //		i->move(listOfOrganisms, size);
-		if (!(listOfOrganisms[i]->update(listOfOrganisms, coordinates(size.first-1,size.second-1))))
+		if (!(listOfOrganisms[i]->update(listOfOrganisms, coordinates(size.first-1,size.second-1,size.third-1))))
 			i++;
 		isFull();
 		//i->update(size);
@@ -119,7 +119,7 @@ bool Aquarium::isFull()
 	for (auto i : listOfOrganisms)
 	{
 		sum += i->getCoef();
-		if (sum > size.first*size.second)
+		if (sum > size.first*size.second*size.third)
 		{
 			throw Exception(4);
 		}

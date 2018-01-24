@@ -9,15 +9,16 @@ void main()
 	std::vector<Organism*> listOfOrganisms;
 
 
-	int chance = rand() % 10 + 50;
+	int chance = rand() % 10 + 25;
 	while (chance)
 	{
 		coordinates posOfPlankton;
 		int radOfView = rand() % 2 + 2;
 		int radOfDisp = rand() % 2 + 1;
-		int lifeTime = rand() % 5 + 20;
+		int lifeTime = rand() % 5 + 5;
 		posOfPlankton.first = rand() % 45 + 0;
 		posOfPlankton.second = rand() % 24 + 0;
+		posOfPlankton.third = rand() % 24 + 0;
 		try
 		{
 			listOfOrganisms.push_back(new Plankton(posOfPlankton, radOfDisp, radOfView, lifeTime));
@@ -39,6 +40,7 @@ void main()
 		int eattime = rand() % 2 + 7;
 		posOfHerbivore.first = rand() % 45 + 0;
 		posOfHerbivore.second = rand() % 24 + 0;
+		posOfHerbivore.third = rand() % 24 + 0;
 		try
 		{
 			listOfOrganisms.push_back(new Herbivore(posOfHerbivore, radOfDisp, radOfView, lifeTime, eattime));
@@ -50,16 +52,17 @@ void main()
 		chance--;
 	}
 	
-	chance = rand() % 3 + 5;
+	chance = rand() % 3 + 10;
 	while (chance)
 	{
 		coordinates posOfPredators;
 		int radOfView = rand() % 4 + 6;
 		int radOfDisp = rand() % 1 + 6;
 		int lifeTime = rand() % 5 + 15;
-		int eattime = rand() % 2 + 7;
+		int eattime = rand() % 3 + 4;
 		posOfPredators.first = rand() % 45 + 0;
 		posOfPredators.second = rand() % 24 + 0;
+		posOfPredators.third = rand() % 24 + 0;
 		try
 		{
 			listOfOrganisms.push_back(new Predator(posOfPredators, radOfDisp, radOfView, lifeTime, eattime));
@@ -71,8 +74,9 @@ void main()
 		chance--;
 	}
 	coordinates size;
-	size.first = 50;
-	size.second = 50;
+	size.first = 30;
+	size.second = 30;
+	size.third = 30;
 	
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Aquarium", sf::Style::Close);
 	window.setFramerateLimit(60);
@@ -94,7 +98,7 @@ void main()
 	diedText.setFillColor(sf::Color::Red);
 	diedText.setPosition(size.first / 2, size.second / 2);
 	///*/
-
+	int plan = 1;
 	try
 	{
 		Aquarium aq(size, listOfOrganisms);
@@ -113,7 +117,15 @@ void main()
 					case sf::Keyboard::Escape:
 						window.close();
 						break;
-
+					case sf::Keyboard::Num1:
+						plan = 1;
+						break;
+					case sf::Keyboard::Num2:
+						plan = 2;
+						break;
+					case sf::Keyboard::Num3:
+						plan = 3;
+						break;
 					case sf::Keyboard::Return:
 						switch (state) {
 
@@ -123,6 +135,7 @@ void main()
 
 						case MODIFYING:
 							state = UPDATING;
+							break;
 
 						default:
 							break;
@@ -160,8 +173,8 @@ void main()
 
 			if (aq.isAlive())
 			{
-				aquaDraw.drawAquarium();
-				aquaDraw.drawOrganisms(aq.getListOfOrganisms());
+				aquaDraw.drawAquarium(plan);
+				aquaDraw.drawOrganisms(aq.getListOfOrganisms(),plan);
 			}
 			else
 			{

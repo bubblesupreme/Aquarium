@@ -60,7 +60,9 @@ void Organism::died(std::vector<Organism*>& organisms)
 
 int Organism::way(coordinates neighbors)
 {
-	return sqrt((neighbors.first - location.first)*(neighbors.first - location.first) + (neighbors.second - location.second)*(neighbors.second - location.second));
+	return sqrt((neighbors.first - location.first)*(neighbors.first - location.first)
+		+ (neighbors.second - location.second)*(neighbors.second - location.second)
+		+ (neighbors.third - location.third)*(neighbors.third - location.third));
 }
 
 

@@ -4,12 +4,13 @@
 #include "Exception.h"
 #include "Constants.h"
 #include "Sprites.h"
+#include "coordinates.h"
 //#include <SFML\Graphics.hpp>
 #include <vector>
 #include <cstdlib>
 #include <iostream>
 
-typedef std::pair<int, int> coordinates;
+
 
 class Organism
 {
