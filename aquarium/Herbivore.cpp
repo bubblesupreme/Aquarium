@@ -8,8 +8,8 @@ Herbivore::Herbivore(coordinates location_, int radOfDisp_, int radOfview_,
 {
 	if ((radOfView > 8) || (radOfView < 6) ||
 		(radOfDisp > 6) || (radOfDisp < 4) ||
-		(lifeTime > 11) || (lifeTime < 8) ||
-		(eatTime > 5) || (eatTime < 4) ||
+		(lifeTime > 30) || (lifeTime < 20) ||
+		(eatTime > 9) || (eatTime < 7) ||
 		(radOfDisp > radOfView))
 	{
 		throw Exception(1);
@@ -31,7 +31,7 @@ bool Herbivore::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
 		died(organisms);
 		return true;
 	}
-	if (eatTime / starvation > 0.5)
+	if (eatTime / starvation >= 2)
 	{
 		if (eat(organisms))
 		{
@@ -104,7 +104,7 @@ bool Herbivore::reproduce(std::vector<Organism*>& organisms)
 		int chance = rand() % 3 + 4;
 		while (chance)
 		{
-			organisms.push_back(new Herbivore(location, rand() % 2 + 4, rand() % 2 + 6, rand() % 3 + 8, rand() % 1 + 4));
+			organisms.push_back(new Herbivore(location, rand() % 2 + 4, rand() % 2 + 6, rand() % 10 + 20, rand() % 2 + 7));
 			chance--;
 		}
 		return true;

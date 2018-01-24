@@ -75,6 +75,7 @@ bool Aquarium::isAlive()
 	}
 	if (fish == 0 || plank == 0 || pred == 0)
 	{
+		std::cout << fish << "fish/" << plank << "plank/pred" << pred << std::endl;
 		return false;
 	}
 	else

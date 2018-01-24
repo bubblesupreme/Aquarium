@@ -9,13 +9,13 @@ void main()
 	std::vector<Organism*> listOfOrganisms;
 
 
-	int chance = rand() % 10 + 120;
+	int chance = rand() % 10 + 50;
 	while (chance)
 	{
 		coordinates posOfPlankton;
 		int radOfView = rand() % 2 + 2;
 		int radOfDisp = rand() % 2 + 1;
-		int lifeTime = rand() % 2 + 3;
+		int lifeTime = rand() % 5 + 20;
 		posOfPlankton.first = rand() % 45 + 0;
 		posOfPlankton.second = rand() % 24 + 0;
 		try
@@ -29,14 +29,14 @@ void main()
 		chance--;
 	}
 
-	chance = rand() % 4 + 140;
+	chance = rand() % 4 + 20;
 	while (chance)
 	{
 		coordinates posOfHerbivore;
 		int radOfView = rand() % 2 + 6;
 		int radOfDisp = rand() % 2 + 4;
-		int lifeTime = rand() % 3 + 8;
-		int eattime = rand() % 1 + 4;
+		int lifeTime = rand() % 10 + 20;
+		int eattime = rand() % 2 + 7;
 		posOfHerbivore.first = rand() % 45 + 0;
 		posOfHerbivore.second = rand() % 24 + 0;
 		try
@@ -50,14 +50,14 @@ void main()
 		chance--;
 	}
 	
-	chance = rand() % 3 + 60;
+	chance = rand() % 3 + 5;
 	while (chance)
 	{
 		coordinates posOfPredators;
 		int radOfView = rand() % 4 + 6;
 		int radOfDisp = rand() % 1 + 6;
-		int lifeTime = rand() % 1 + 4;
-		int eattime = rand() % 1 + 2;
+		int lifeTime = rand() % 5 + 15;
+		int eattime = rand() % 2 + 7;
 		posOfPredators.first = rand() % 45 + 0;
 		posOfPredators.second = rand() % 24 + 0;
 		try
@@ -71,10 +71,10 @@ void main()
 		chance--;
 	}
 	coordinates size;
-	size.first = 45;
-	size.second = 24;
+	size.first = 50;
+	size.second = 50;
 	
-	sf::RenderWindow window(sf::VideoMode(1800, 960), "Aquarium", sf::Style::Close);
+	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Aquarium", sf::Style::Close);
 	window.setFramerateLimit(60);
 	sf::Event e;
 	const int UPDATING = 0, MODIFYING = 1;

@@ -28,7 +28,7 @@ void Drawer::drawOrganisms(std::vector<Organism*>& listOfOrganisms)
 void Drawer::drawAquarium()
 {
 	
-	for (int i = 0; i < size.second; i++)
+	/*for (int i = 0; i < size.second; i++)
 	{
 		for (int j = 0; j < size.first; j++)
 		{
@@ -36,8 +36,8 @@ void Drawer::drawAquarium()
 			s_map.setPosition(j*40, i*40);
 			renderWindow->draw(s_map);
 		}
-	}
+	}*/
 	
-	//renderWindow->draw(s_map);
+	renderWindow->draw(s_map);
 	
 }

@@ -6,7 +6,7 @@
 
 /*  radOfView: 2-4
     radOfDisp: 1-3
-	lifeTime: 3-5 days
+	lifeTime: 10-15 days
 	pauseReprodaction: 2
 */
 

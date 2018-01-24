@@ -7,7 +7,7 @@ Plankton::Plankton(coordinates location_, int radOfDisp_, int radOfview_,
 {
 	if ((radOfView > 4) || (radOfView < 2) ||
 		(radOfDisp > 3) || (radOfDisp < 1) ||
-		(lifeTime > 5) || (lifeTime < 3) ||
+		(lifeTime > 25) || (lifeTime < 20) ||
 		(radOfDisp > radOfView))
 	{
 		throw Exception(1);
@@ -66,7 +66,7 @@ bool Plankton::reproduce(std::vector<Organism*>& organisms)
 		int chance = rand() % 5 + 5;
 		while (chance)
 		{
-			organisms.push_back(new Plankton(location, rand() % 2 + 1, rand() % 2 + 2, rand() % 2 + 3));
+			organisms.push_back(new Plankton(location, rand() % 2 + 1, rand() % 2 + 2, rand() % 5 + 20));
 			chance--;
 		}
 		return true;

@@ -8,8 +8,8 @@ Predator::Predator(coordinates location_, int radOfDisp_, int radOfview_,
 {
 	if ((radOfView > 10) || (radOfView < 6) ||
 		(radOfDisp > 7) || (radOfDisp < 6) ||
-		(lifeTime > 5) || (lifeTime < 4) ||
-		(eatTime > 3) || (eatTime < 2) ||
+		(lifeTime > 20) || (lifeTime < 15) ||
+		(eatTime > 9) || (eatTime < 7) ||
 		(radOfDisp > radOfView))
 	{
 		throw Exception(1);
@@ -32,7 +32,7 @@ bool Predator::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
 		died(organisms);
 		return  true;
 	}
-	if (eatTime / starvation > 0.5)
+	if (eatTime / starvation >= 2)
 	{
 		if (eat(organisms))
 		{
@@ -106,7 +106,7 @@ bool Predator::reproduce(std::vector<Organism*>& organisms)
 		int chance = rand() % 1 + 2;
 		while (chance)
 		{
-			organisms.push_back(new Predator(location, rand() % 1 + 6, rand() % 4 + 6, rand() % 1 + 4, rand() % 1 + 2));
+			organisms.push_back(new Predator(location, rand() % 1 + 6, rand() % 4 + 6, rand() % 5 + 15, rand() % 2 + 7));
 			chance--;
 		}
 		return true;
