@@ -6,9 +6,8 @@ class Drawer
 {
 public:
 	Drawer(sf::RenderWindow& renderWindow, coordinates coord, std::string aquaImagePath);
-	void drawOrganisms(std::vector<Organism*>& organisms);
-	void drawAquarium(
-	);
+	void drawOrganisms(std::vector<Organism*>& organisms,int plan);
+	void drawAquarium(int plan);
 	~Drawer();
 private:
 	sf::RenderWindow* renderWindow;

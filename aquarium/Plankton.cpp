@@ -3,11 +3,11 @@
 
 Plankton::Plankton(coordinates location_, int radOfDisp_, int radOfview_,
 	int lifeTime_) :Organism(location_, radOfDisp_, radOfview_,
-		lifeTime_, 2, coefOfPlancton,&sprites.PlanktonMove)
+		lifeTime_, 4, coefOfPlancton,&sprites.PlanktonMove)
 {
 	if ((radOfView > 4) || (radOfView < 2) ||
 		(radOfDisp > 3) || (radOfDisp < 1) ||
-		(lifeTime > 5) || (lifeTime < 3) ||
+		(lifeTime > 10) || (lifeTime < 5) ||
 		(radOfDisp > radOfView))
 	{
 		throw Exception(1);
@@ -66,7 +66,7 @@ bool Plankton::reproduce(std::vector<Organism*>& organisms)
 		int chance = rand() % 5 + 5;
 		while (chance)
 		{
-			organisms.push_back(new Plankton(location, rand() % 2 + 1, rand() % 2 + 2, rand() % 2 + 3));
+			organisms.push_back(new Plankton(location, rand() % 2 + 1, rand() % 2 + 2, rand() % 5 + 5));
 			chance--;
 		}
 		return true;
@@ -83,7 +83,7 @@ void Plankton::move(std::vector<Organism*>& organisms, coordinates sizeAqua)
 	if (organisms.size() != 1)
 	{
 		
-		coordinates newLoc(location.first, location.second);
+		coordinates newLoc(location.first, location.second,location.third);
 		for (int i = (-1)*radOfDisp; i <= radOfDisp; i++)
 		{
 			if ((location.first + i <= sizeAqua.first) && (location.first + i >= 0))
@@ -92,18 +92,24 @@ void Plankton::move(std::vector<Organism*>& organisms, coordinates sizeAqua)
 				{
 					if ((location.second + j <= sizeAqua.second) && (location.second + j >= 0))
 					{
-						int distance = 0;
-						for (auto u : organisms)
+						for (int h = (-1)*radOfDisp; h <= radOfDisp; h++)
 						{
-							if ((u != this) && (radOfView >= way(u->getLocation())) && (u->getCoef() == coefOfHerbivore))
+							if ((location.third + h <= sizeAqua.third) && (location.third + h >= 0))
 							{
-								distance += way(u->getLocation());
+								int distance = 0;
+								for (auto u : organisms)
+								{
+									if ((u != this) && (radOfView >= way(u->getLocation())) && (u->getCoef() == coefOfHerbivore))
+									{
+										distance += way(u->getLocation());
+									}
+								}
+								if (distance > maxDist)
+								{
+									maxDist = distance;
+									newLoc = coordinates(location.first + i, location.second + j,location.third+h);
+								}
 							}
-						}
-						if (distance > maxDist)
-						{
-							maxDist = distance;
-							newLoc = coordinates(location.first + i, location.second + j);
 						}
 					}
 				}
@@ -114,7 +120,7 @@ void Plankton::move(std::vector<Organism*>& organisms, coordinates sizeAqua)
 	}
 	if ((organisms.size() == 1) || (maxDist == 0))
 	{
-		int newx = rand() % radOfDisp - radOfDisp;
+		int newx = rand() % radOfDisp - radOfDisp + rand() % radOfDisp;
 		if (location.first + newx > sizeAqua.first)
 		{
 			newx = sizeAqua.first - location.first;
@@ -123,7 +129,7 @@ void Plankton::move(std::vector<Organism*>& organisms, coordinates sizeAqua)
 		{
 			newx = 0 - location.first;
 		}
-		int newy = rand() % radOfDisp - radOfDisp;
+		int newy = rand() % radOfDisp - radOfDisp + rand() % radOfDisp;
 		if (location.second + newy > sizeAqua.second)
 		{
 			newy = sizeAqua.second - location.second;
@@ -132,7 +138,16 @@ void Plankton::move(std::vector<Organism*>& organisms, coordinates sizeAqua)
 		{
 			newy = 0 - location.second;
 		}
-		location = coordinates(location.first + newx, location.second + newy);
+		int newz = rand() % radOfDisp - radOfDisp + rand() % radOfDisp;
+		if (location.third + newz > sizeAqua.third)
+		{
+			newz = sizeAqua.third - location.third;
+		}
+		if (location.third + newz <0)
+		{
+			newz = 0 - location.third;
+		}
+		location = coordinates(location.first + newx, location.second + newy, location.third+newz);
 	}
 
 }
