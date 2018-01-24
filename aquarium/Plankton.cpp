@@ -44,23 +44,26 @@ bool Plankton::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
 
 bool Plankton::reproduce(std::vector<Organism*>& organisms)
 {
-	std::vector<Organism*> neighbors;
-
-	for (auto u : organisms)
+	int  choice =-1;
+	int minWay=10000;
+	for (int i=0;i<organisms.size();i++)
 	{
-		if ((u != this) && (coef == u->getCoef()) && (radOfDisp >= way(u->getLocation())) &&
-			(u->getReprodaction() > u->getPauseReprodaction()))
+		if ((organisms[i] != this) && (coef == organisms[i]->getCoef()) && (radOfDisp >= way(organisms[i]->getLocation())) &&
+			(organisms[i]->getReprodaction() > organisms[i]->getPauseReprodaction()))
 		{
-			neighbors.push_back(u);
+			if (way(organisms[i]->getLocation()) < minWay)
+			{
+				minWay = way(organisms[i]->getLocation());
+				choice = i;
+			}
 		}
 	}
-	if (neighbors.size() > 0)
+	if (choice!=-1)
 	{
-		int choice = rand() % neighbors.size();
-		location = neighbors[choice]->getLocation();
+		location = organisms[choice]->getLocation();
 		reproduction = 0;
-		neighbors[choice]->reproductionUp();
-		int chance = rand() % 2 + 5;
+		organisms[choice]->reproductionUp();
+		int chance = rand() % 5 + 5;
 		while (chance)
 		{
 			organisms.push_back(new Plankton(location, rand() % 2 + 1, rand() % 2 + 2, rand() % 2 + 3));

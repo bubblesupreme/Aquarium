@@ -9,16 +9,15 @@ void main()
 	std::vector<Organism*> listOfOrganisms;
 
 
-	int chance = rand() % 10 + 25;
+	int chance = rand() % 10 + 120;
 	while (chance)
 	{
 		coordinates posOfPlankton;
 		int radOfView = rand() % 2 + 2;
 		int radOfDisp = rand() % 2 + 1;
 		int lifeTime = rand() % 2 + 3;
-		int location = rand() % 20 + 1;
-		posOfPlankton.first = rand() % 40 + 0;
-		posOfPlankton.second = rand() % 30 + 0;
+		posOfPlankton.first = rand() % 45 + 0;
+		posOfPlankton.second = rand() % 24 + 0;
 		try
 		{
 			listOfOrganisms.push_back(new Plankton(posOfPlankton, radOfDisp, radOfView, lifeTime));
@@ -30,7 +29,7 @@ void main()
 		chance--;
 	}
 
-	chance = rand() % 4 + 15;
+	chance = rand() % 4 + 140;
 	while (chance)
 	{
 		coordinates posOfHerbivore;
@@ -38,8 +37,8 @@ void main()
 		int radOfDisp = rand() % 2 + 4;
 		int lifeTime = rand() % 3 + 8;
 		int eattime = rand() % 1 + 4;
-		posOfHerbivore.first = rand() % 40 + 0;
-		posOfHerbivore.second = rand() % 30 + 0;
+		posOfHerbivore.first = rand() % 45 + 0;
+		posOfHerbivore.second = rand() % 24 + 0;
 		try
 		{
 			listOfOrganisms.push_back(new Herbivore(posOfHerbivore, radOfDisp, radOfView, lifeTime, eattime));
@@ -51,7 +50,7 @@ void main()
 		chance--;
 	}
 	
-	chance = rand() % 3 + 13;
+	chance = rand() % 3 + 60;
 	while (chance)
 	{
 		coordinates posOfPredators;
@@ -59,9 +58,8 @@ void main()
 		int radOfDisp = rand() % 1 + 6;
 		int lifeTime = rand() % 1 + 4;
 		int eattime = rand() % 1 + 2;
-		int location = rand() % 20 + 1;
-		posOfPredators.first = rand() % 40 + 0;
-		posOfPredators.second = rand() % 30 + 0;
+		posOfPredators.first = rand() % 45 + 0;
+		posOfPredators.second = rand() % 24 + 0;
 		try
 		{
 			listOfOrganisms.push_back(new Predator(posOfPredators, radOfDisp, radOfView, lifeTime, eattime));
@@ -73,10 +71,10 @@ void main()
 		chance--;
 	}
 	coordinates size;
-	size.first = 60;
-	size.second = 45;
+	size.first = 45;
+	size.second = 24;
 	
-	sf::RenderWindow window(sf::VideoMode(1200, 900), "Aquarium", sf::Style::Close);
+	sf::RenderWindow window(sf::VideoMode(1800, 960), "Aquarium", sf::Style::Close);
 	window.setFramerateLimit(60);
 	sf::Event e;
 	const int UPDATING = 0, MODIFYING = 1;
@@ -85,7 +83,7 @@ void main()
 	///died
 	sf::Font fontToDied;
 	fontToDied.loadFromFile("CyrilicOld.ttf");
-	sf::Text diedText("Aquarium died",fontToDied,90);
+	sf::Text diedText("Aquarium died",fontToDied,150);
 	diedText.setFillColor(sf::Color::Red);
 	diedText.setPosition(size.first / 2,size.second/2);
 	///
@@ -100,7 +98,7 @@ void main()
 	try
 	{
 		Aquarium aq(size, listOfOrganisms);
-		std::string mapPath = "pp.png";
+		std::string mapPath = "water.png";
 		Drawer aquaDraw(window, size, mapPath);
 		while (window.isOpen()) {
 
