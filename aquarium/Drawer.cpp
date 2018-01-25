@@ -12,7 +12,7 @@ Drawer::Drawer(sf::RenderWindow& renderWindow, coordinates size, std::string aqu
 	this->size = size;
 
 }
-void Drawer::drawOrganisms(std::vector<Organism*>& listOfOrganisms,int plan)
+void Drawer::drawOrganisms(std::list<Organism*>& listOfOrganisms,int plan)
 {
 	std::cout << "\n\n"<<listOfOrganisms.size()<<"   ";
 	if (plan == 1)
@@ -21,8 +21,8 @@ void Drawer::drawOrganisms(std::vector<Organism*>& listOfOrganisms,int plan)
 		{
 			//organismSprite->setPosition(((*i)->getLocation().second*20), ((*i)->getLocation().first*20));
 			//(*i)->draw(renderWindow);
-			(*i)->getSprite()->setPosition(((*i)->getLocation().first * SIZE), ((*i)->getLocation().second * SIZE));
-			renderWindow->draw(*(*i)->getSprite());
+			(*i)->getSprite().setPosition(((*i)->getLocation().first * SIZE), ((*i)->getLocation().second * SIZE));
+			renderWindow->draw((*i)->getSprite());
 			//renderWindow->draw(organismSprite);
 			std::cout << (*i)->getLocation().first << "-" << (*i)->getLocation().second << "  ";
 		}
@@ -33,8 +33,8 @@ void Drawer::drawOrganisms(std::vector<Organism*>& listOfOrganisms,int plan)
 		{
 			//organismSprite->setPosition(((*i)->getLocation().second*20), ((*i)->getLocation().first*20));
 			//(*i)->draw(renderWindow);
-			(*i)->getSprite()->setPosition(((*i)->getLocation().first * SIZE), ((*i)->getLocation().third * SIZE));
-			renderWindow->draw(*(*i)->getSprite());
+			(*i)->getSprite().setPosition(((*i)->getLocation().first * SIZE), ((*i)->getLocation().third * SIZE));
+			renderWindow->draw((*i)->getSprite());
 			//renderWindow->draw(organismSprite);
 			std::cout << (*i)->getLocation().first << "-" << (*i)->getLocation().third << "  ";
 		}
@@ -45,8 +45,8 @@ void Drawer::drawOrganisms(std::vector<Organism*>& listOfOrganisms,int plan)
 		{
 			//organismSprite->setPosition(((*i)->getLocation().second*20), ((*i)->getLocation().first*20));
 			//(*i)->draw(renderWindow);
-			(*i)->getSprite()->setPosition(((*i)->getLocation().second * SIZE), ((*i)->getLocation().third* SIZE));
-			renderWindow->draw(*(*i)->getSprite());
+			(*i)->getSprite().setPosition(((*i)->getLocation().second * SIZE), ((*i)->getLocation().third* SIZE));
+			renderWindow->draw((*i)->getSprite());
 			//renderWindow->draw(organismSprite);
 			std::cout << (*i)->getLocation().second << "-" << (*i)->getLocation().third << "  ";
 		}

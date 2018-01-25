@@ -2,8 +2,8 @@
 
 
 Plankton::Plankton(coordinates location_, int radOfDisp_, int radOfview_,
-	int lifeTime_) :Organism(location_, radOfDisp_, radOfview_,
-		lifeTime_, 4, coefOfPlancton,&sprites.PlanktonMove)
+	int lifeTime_, Sprites* sprites_) :Organism(location_, radOfDisp_, radOfview_,
+		lifeTime_, 4, coefOfPlancton,sprites_)
 {
 	if ((radOfView > 4) || (radOfView < 2) ||
 		(radOfDisp > 3) || (radOfDisp < 1) ||
@@ -19,54 +19,54 @@ Plankton::Plankton(coordinates location_, int radOfDisp_, int radOfview_,
 Plankton::~Plankton()
 {}
 
-bool Plankton::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
+void Plankton::update(std::list<Organism*>& organisms, coordinates sizeAqua, std::set<Organism*>& del)
 {
-	body = &sprites.PlanktonMove;
+	body = sprites->PlanktonMove;
 	lifeTime--;
 	reproduction++;
 	if (lifeTime <= 0)
 	{
-		died(organisms);
-		return true;
+		//died(organisms);
+		del.insert(this);
+		return;
 	}
 	if (reproduction >= pauseReprodaction)
 	{
 		if (reproduce(organisms))
 		{
-			body = &sprites.PlanktonReprod;
-			return false;
+			body = sprites->PlanktonReprod;
 		}
+		return;
 	}
-	body = &sprites.PlanktonMove;
+	body = sprites->PlanktonMove;
 	move(organisms, sizeAqua);
-	return false;
 }
 
-bool Plankton::reproduce(std::vector<Organism*>& organisms)
+bool Plankton::reproduce(std::list<Organism*>& organisms)
 {
-	int  choice =-1;
+	std::list<Organism*>::iterator  choice = organisms.end();
 	int minWay=10000;
-	for (int i=0;i<organisms.size();i++)
+	for (auto u = organisms.begin(); u != organisms.end(); u++)
 	{
-		if ((organisms[i] != this) && (coef == organisms[i]->getCoef()) && (radOfDisp >= way(organisms[i]->getLocation())) &&
-			(organisms[i]->getReprodaction() > organisms[i]->getPauseReprodaction()))
+		if ((*u != this) && (coef == (*u)->getCoef()) && (radOfDisp >= way((*u)->getLocation())) &&
+			((*u)->getReprodaction() > (*u)->getPauseReprodaction()))
 		{
-			if (way(organisms[i]->getLocation()) < minWay)
+			if (way((*u)->getLocation()) < minWay)
 			{
-				minWay = way(organisms[i]->getLocation());
-				choice = i;
+				minWay = way((*u)->getLocation());
+				choice = u;
 			}
 		}
 	}
-	if (choice!=-1)
+	if (choice!= organisms.end())
 	{
-		location = organisms[choice]->getLocation();
+		location = (*choice)->getLocation();
 		reproduction = 0;
-		organisms[choice]->reproductionUp();
+		(*choice)->reproductionUp();
 		int chance = rand() % 5 + 5;
 		while (chance)
 		{
-			organisms.push_back(new Plankton(location, rand() % 2 + 1, rand() % 2 + 2, rand() % 5 + 5));
+			organisms.push_back(new Plankton(location, rand() % 2 + 1, rand() % 2 + 2, rand() % 5 + 5, sprites));
 			chance--;
 		}
 		return true;
@@ -77,7 +77,7 @@ bool Plankton::reproduce(std::vector<Organism*>& organisms)
 	}
 }
 
-void Plankton::move(std::vector<Organism*>& organisms, coordinates sizeAqua)
+void Plankton::move(std::list<Organism*>& organisms, coordinates sizeAqua)
 {
 	float maxDist = 0;
 	if (organisms.size() != 1)

@@ -8,18 +8,18 @@ class Aquarium
 {
 public:
 	Aquarium(coordinates size);
-	Aquarium(coordinates size, std::vector<Organism*> org);
+	Aquarium(coordinates size, std::list<Organism*> org);
 	~Aquarium();
 	void show();
 	void update();
 	void addOrganism(Organism* org);
-	std::vector<Organism*> getListOfOrganisms();
+	std::list<Organism*> getListOfOrganisms();
 	bool isAlive();
 
 private:
 	bool isFull();
 	coordinates size;
-	std::vector<Organism*> listOfOrganisms;
+	std::list<Organism*> listOfOrganisms;
 };
 
 #endif

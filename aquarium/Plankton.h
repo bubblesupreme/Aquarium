@@ -15,13 +15,13 @@ class Plankton :
 {
 public:
 	Plankton(coordinates location_, int radOfDisp_, int radOfview_,
-		int lifeTime_);
+		int lifeTime_, Sprites* sprites_);
 	virtual ~Plankton();
 	//using Organism::update;
-	virtual bool update(std::vector<Organism*>& organisms, coordinates sizeAqua) override;
+	virtual void update(std::list<Organism*>& organisms, coordinates sizeAqua, std::set<Organism*>& del) override;
 private:
-	virtual bool reproduce(std::vector<Organism*>& organisms) override;
-	virtual void move(std::vector<Organism*>& organisms, coordinates sizeAqua) override;
+	virtual bool reproduce(std::list<Organism*>& organisms) override;
+	virtual void move(std::list<Organism*>& organisms, coordinates sizeAqua) override;
 };
 
 

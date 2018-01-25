@@ -1,9 +1,10 @@
 #include "aquarium.h"
 #include <cstdlib>
-#include "Plankton.h"
+
+
 Aquarium::Aquarium(coordinates size) :size(size){}
 
-Aquarium::Aquarium(coordinates size, std::vector<Organism*> org)
+Aquarium::Aquarium(coordinates size, std::list<Organism*> org)
 	:size(size)
 {
 	this->listOfOrganisms = org;
@@ -20,21 +21,27 @@ Aquarium::Aquarium(coordinates size, std::vector<Organism*> org)
 
 Aquarium::~Aquarium()
 {
-	listOfOrganisms.~vector();
+	listOfOrganisms.~list();
 }
 
 void Aquarium::update()
 {
-	
-	for (int i=0; i< listOfOrganisms.size();i)
+	std::set<Organism*> del;
+	for (auto it=listOfOrganisms.begin();it!=listOfOrganisms.end();it++)
 	{
-
-//		i->move(listOfOrganisms, size);
-		if (!(listOfOrganisms[i]->update(listOfOrganisms, coordinates(size.first-1,size.second-1,size.third-1))))
-			i++;
+		(*it)->update(listOfOrganisms, coordinates(size.first - 1, size.second - 1, size.third - 1),del);
 		isFull();
-		//i->update(size);
-		//i->test();
+	}
+	for (auto it = listOfOrganisms.begin(); it != listOfOrganisms.end();)
+	{
+		if (del.find(*it) != del.end())
+		{
+			it=listOfOrganisms.erase(it++);
+		}
+		else
+		{
+			it++;
+		}
 	}
 }
 
@@ -109,7 +116,7 @@ void Aquarium::show()
 	std::cout << "Pr" << pred << std::endl;
 }
 
-std::vector<Organism*> Aquarium::getListOfOrganisms()
+std::list<Organism*> Aquarium::getListOfOrganisms()
 { 
 	return listOfOrganisms; 
 }

@@ -6,32 +6,32 @@
 #include "Sprites.h"
 #include "coordinates.h"
 //#include <SFML\Graphics.hpp>
-#include <vector>
+#include <list>
 #include <cstdlib>
 #include <iostream>
-
+#include <set>
 
 
 class Organism
 {
 public:
 	Organism(coordinates location_, int radOfDisp_, int radOfView_,
-		int lifeTime_, int pauseReprodaction_, int coef_, sf::Sprite* body_);
+		int lifeTime_, int pauseReprodaction_, int coef_, Sprites* sprites_);
 	virtual ~Organism();
-	virtual bool update(std::vector<Organism*>& organisms, coordinates sizeAqua) = 0;
-	virtual void move(std::vector<Organism*>& organisms, coordinates sizeAqua) = 0;
-	void died(std::vector<Organism*>& organisms);
+	virtual void update(std::list<Organism*>& organisms, coordinates sizeAqua, std::set<Organism*>& del) = 0;
+	virtual void move(std::list<Organism*>& organisms, coordinates sizeAqua) = 0;
+	//void died(std::list<Organism*>& organisms);
 	void reproductionUp();
 	int getCoef() const;
 	int getReprodaction() const;
 	int getPauseReprodaction() const;
-	sf::Sprite* getSprite() const;
+	sf::Sprite getSprite() const;
 	coordinates getLocation()const;
 	
 protected:
-	sf::Sprite* body;
+	sf::Sprite body;
 	int way(coordinates neighbors);
-	virtual bool reproduce(std::vector<Organism*>& organisms) = 0;
+	virtual bool reproduce(std::list<Organism*>& organisms) = 0;
 	int lifeTime;
 	int reproduction;
 	const int pauseReprodaction;
@@ -39,7 +39,7 @@ protected:
 	const int radOfDisp;
 	const int coef;
 	coordinates location;
-	Sprites sprites;
+	Sprites* sprites;
 };
 
 #endif
