@@ -31,7 +31,6 @@ public:
 protected:
 	sf::Sprite body;
 	int way(coordinates neighbors);
-	int way(coordinates this_,coordinates neighbors);
 	virtual bool reproduce(std::list<Organism*>& organisms) = 0;
 	int lifeTime;
 	int reproduction;

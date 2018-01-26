@@ -119,19 +119,9 @@ bool Predator::reproduce(std::list<Organism*>& organisms)
 
 void Predator::move(std::list<Organism*>& organisms, coordinates sizeAqua)
 {
-	float minDist = sizeAqua.first*sizeAqua.second*sizeAqua.third;
-
-	std::list<Organism*> neighbors;
+	float minDist = sizeAqua.first*sizeAqua.second;
 	if (organisms.size() != 1)
 	{
-		for (auto u : organisms)
-		{
-			if ((u != this) && (radOfView >= way(u->getLocation())) && (u->getCoef() == coefOfHerbivore))
-			{
-				neighbors.push_back(u);
-			}
-		}
-
 		coordinates newLoc(location.first, location.second,location.third);
 		for (int i = (-1)*radOfDisp; i <= radOfDisp; i++)
 		{
@@ -146,10 +136,12 @@ void Predator::move(std::list<Organism*>& organisms, coordinates sizeAqua)
 							if ((location.third + h <= sizeAqua.third) && (location.third + h >= 0))
 							{
 								int distance = 0;
-								for (auto u : neighbors)
+								for (auto u : organisms)
 								{
-									distance += way(coordinates(location.first+i,location.second+j,
-										location.third+h),u->getLocation());
+									if ((u != this) && (radOfView >= way(u->getLocation())) && (u->getCoef() == coefOfHerbivore))
+									{
+										distance += way(u->getLocation());
+									}
 								}
 								if (distance < minDist)
 								{
@@ -165,7 +157,7 @@ void Predator::move(std::list<Organism*>& organisms, coordinates sizeAqua)
 			location = newLoc;
 		}
 	}
-	if ((organisms.size() == 1) || (minDist == sizeAqua.first*sizeAqua.second*sizeAqua.third))
+	if ((organisms.size() == 1) || (minDist == sizeAqua.first*sizeAqua.second))
 	{
 		int newx = rand() % radOfDisp - radOfDisp + rand() % radOfDisp;
 		if (location.first + newx > sizeAqua.first)

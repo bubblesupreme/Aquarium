@@ -10,7 +10,7 @@ void main()
 	coordinates size(28,28,28);
 	Sprites* sprites = new Sprites;
 
-	int chance = rand() % 10 + 85;
+	int chance = rand() % 10 + 25;
 	while (chance)
 	{
 		coordinates posOfPlankton;
@@ -31,7 +31,7 @@ void main()
 		chance--;
 	}
 
-	chance = rand() % 4 + 100;
+	chance = rand() % 4 + 20;
 	while (chance)
 	{
 		coordinates posOfHerbivore;
@@ -53,7 +53,7 @@ void main()
 		chance--;
 	}
 	
-	chance = rand() % 3 + 60;
+	chance = rand() % 3 + 10;
 	while (chance)
 	{
 		coordinates posOfPredators;

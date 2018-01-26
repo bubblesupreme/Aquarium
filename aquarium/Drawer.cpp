@@ -1,5 +1,5 @@
 #include "Drawer.h"
-const int SIZE = 35;
+int SIZE = 35;
 Drawer::~Drawer()
 {
 }
