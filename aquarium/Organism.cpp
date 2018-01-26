@@ -64,4 +64,9 @@ int Organism::way(coordinates neighbors)
 		+ (neighbors.third - location.third)*(neighbors.third - location.third));
 }
 
-
+int Organism::way(coordinates this_, coordinates neighbors)
+{
+	return sqrt((neighbors.first - this_.first)*(neighbors.first - this_.first)
+		+ (neighbors.second - this_.second)*(neighbors.second - this_.second)
+		+ (neighbors.third - this_.third)*(neighbors.third - this_.third));
+}

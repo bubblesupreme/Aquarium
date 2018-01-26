@@ -21,7 +21,7 @@ Aquarium::Aquarium(coordinates size, std::list<Organism*> org)
 
 Aquarium::~Aquarium()
 {
-	listOfOrganisms.~list();
+	//listOfOrganisms.~list();
 }
 
 void Aquarium::update()
@@ -36,6 +36,7 @@ void Aquarium::update()
 	{
 		if (del.find(*it) != del.end())
 		{
+			
 			it=listOfOrganisms.erase(it++);
 		}
 		else

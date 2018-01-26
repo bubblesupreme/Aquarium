@@ -80,10 +80,19 @@ bool Plankton::reproduce(std::list<Organism*>& organisms)
 void Plankton::move(std::list<Organism*>& organisms, coordinates sizeAqua)
 {
 	float maxDist = 0;
+
+	std::list<Organism*> neighbors;
 	if (organisms.size() != 1)
 	{
-		
-		coordinates newLoc(location.first, location.second,location.third);
+		for (auto u : organisms)
+		{
+			if ((u != this) && (radOfView >= way(u->getLocation())) && (u->getCoef() == coefOfHerbivore))
+			{
+				neighbors.push_back(u);
+			}
+		}
+
+		coordinates newLoc(location.first, location.second, location.third);
 		for (int i = (-1)*radOfDisp; i <= radOfDisp; i++)
 		{
 			if ((location.first + i <= sizeAqua.first) && (location.first + i >= 0))
@@ -97,17 +106,15 @@ void Plankton::move(std::list<Organism*>& organisms, coordinates sizeAqua)
 							if ((location.third + h <= sizeAqua.third) && (location.third + h >= 0))
 							{
 								int distance = 0;
-								for (auto u : organisms)
+								for (auto u : neighbors)
 								{
-									if ((u != this) && (radOfView >= way(u->getLocation())) && (u->getCoef() == coefOfHerbivore))
-									{
-										distance += way(u->getLocation());
-									}
+									distance += way(coordinates(location.first + i, location.second + j,
+										location.third + h), u->getLocation());
 								}
 								if (distance > maxDist)
 								{
 									maxDist = distance;
-									newLoc = coordinates(location.first + i, location.second + j,location.third+h);
+									newLoc = coordinates(location.first + i, location.second + j, location.third + h);
 								}
 							}
 						}
@@ -125,7 +132,7 @@ void Plankton::move(std::list<Organism*>& organisms, coordinates sizeAqua)
 		{
 			newx = sizeAqua.first - location.first;
 		}
-		if (location.first + newx <0)
+		if (location.first + newx < 0)
 		{
 			newx = 0 - location.first;
 		}
@@ -134,7 +141,7 @@ void Plankton::move(std::list<Organism*>& organisms, coordinates sizeAqua)
 		{
 			newy = sizeAqua.second - location.second;
 		}
-		if (location.second + newy <0)
+		if (location.second + newy < 0)
 		{
 			newy = 0 - location.second;
 		}
@@ -143,11 +150,11 @@ void Plankton::move(std::list<Organism*>& organisms, coordinates sizeAqua)
 		{
 			newz = sizeAqua.third - location.third;
 		}
-		if (location.third + newz <0)
+		if (location.third + newz < 0)
 		{
 			newz = 0 - location.third;
 		}
-		location = coordinates(location.first + newx, location.second + newy, location.third+newz);
+		location = coordinates(location.first + newx, location.second + newy, location.third + newz);
 	}
 
 }
