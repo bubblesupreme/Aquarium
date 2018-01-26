@@ -6,9 +6,8 @@
 #include "Predator.h"
 void main()
 {
-	std::list<Organism*> listOfOrganisms;
+	std::vector<Organism*> listOfOrganisms;
 	coordinates size(28,28,28);
-	Sprites* sprites = new Sprites;
 
 	int chance = rand() % 10 + 25;
 	while (chance)
@@ -22,7 +21,7 @@ void main()
 		posOfPlankton.third = rand() % size.third + 0;
 		try
 		{
-			listOfOrganisms.push_back(new Plankton(posOfPlankton, radOfDisp, radOfView, lifeTime,sprites));
+			listOfOrganisms.push_back(new Plankton(posOfPlankton, radOfDisp, radOfView, lifeTime));
 		}
 		catch (Exception &ex)
 		{
@@ -44,7 +43,7 @@ void main()
 		posOfHerbivore.third = rand() % size.third + 0;
 		try
 		{
-			listOfOrganisms.push_back(new Herbivore(posOfHerbivore, radOfDisp, radOfView, lifeTime, eattime, sprites));
+			listOfOrganisms.push_back(new Herbivore(posOfHerbivore, radOfDisp, radOfView, lifeTime, eattime));
 		}
 		catch (Exception &ex)
 		{
@@ -66,7 +65,7 @@ void main()
 		posOfPredators.third = rand() % size.third + 0;
 		try
 		{
-			listOfOrganisms.push_back(new Predator(posOfPredators, radOfDisp, radOfView, lifeTime, eattime, sprites));
+			listOfOrganisms.push_back(new Predator(posOfPredators, radOfDisp, radOfView, lifeTime, eattime));
 		}
 		catch (Exception &ex)
 		{
