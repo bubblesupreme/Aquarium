@@ -1,10 +1,10 @@
 #ifndef COORDINATES_H
 #define COORDINATES_H
 struct coordinates
-{	coordinates(int first,int second,int third):first(first),second(second),third(third){}
+{	coordinates(float first, float second, float third):first(first),second(second),third(third){}
 	coordinates(){}
-	int first;
-	int second;
-	int third;
+	float first;
+	float second;
+	float third;
 };
 #endif COORDINATES

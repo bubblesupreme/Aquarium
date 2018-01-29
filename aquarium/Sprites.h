@@ -2,7 +2,6 @@
 #define SPRITES_H
 
 #include <SFML\Graphics.hpp>
-#include <iostream>
 
  class Sprites
 {
@@ -25,14 +24,14 @@ public:
 		PredatorReprod.setTexture(PredatorReprodT);
 		PlanktonMove.setTexture(PlanktonMoveT);
 		PlanktonReprod.setTexture(PlanktonReprodT);
-		HerbivoreEat.scale(0.3, 0.3);
-		HerbivoreMove.scale(0.3, 0.3);
-		HerbivoreReprod.scale(0.3, 0.3);
-		PredatorEat.scale(0.3, 0.3);
-		PredatorMove.scale(0.3, 0.3);
-		PredatorReprod.scale(0.3, 0.3);
-		PlanktonMove.scale(0.3, 0.3);
-		PlanktonReprod.scale(0.3, 0.3);
+		HerbivoreEat.scale(0.28, 0.28);
+		HerbivoreMove.scale(0.28, 0.28);
+		HerbivoreReprod.scale(0.28, 0.28);
+		PredatorEat.scale(0.28, 0.28);
+		PredatorMove.scale(0.28, 0.28);
+		PredatorReprod.scale(0.28, 0.28);
+		PlanktonMove.scale(0.28, 0.28);
+		PlanktonReprod.scale(0.28, 0.28);
 	}
 	~Sprites(){}
 
@@ -55,7 +54,5 @@ private:
 	 sf::Texture PlanktonReprodT;
 	
 };
-
-//C:\\Users\\home\\Source\\Repos\\Aquarium\\aquarium\\
 
 #endif

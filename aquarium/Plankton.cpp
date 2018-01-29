@@ -1,72 +1,77 @@
 #include "Plankton.h"
-
+#include <iostream>
 
 Plankton::Plankton(coordinates location_, int radOfDisp_, int radOfview_,
-	int lifeTime_) :Organism(location_, radOfDisp_, radOfview_,
-		lifeTime_, 4, coefOfPlancton,&sprites.PlanktonMove)
+	int lifeTime_, bool sex_, Sprites* sprites_) :Organism(location_, radOfDisp_, radOfview_,
+		lifeTime_, 5, coefOfPlancton,sex_,sprites_)
 {
-	if ((radOfView > 4) || (radOfView < 2) ||
-		(radOfDisp > 3) || (radOfDisp < 1) ||
-		(lifeTime > 10) || (lifeTime < 5) ||
+	if ((radOfView> radOfViewPlankton+radOfViewPlanktonDelta) || (radOfView < radOfViewPlankton) ||
+		(radOfDisp> radOfDispPlankton + radOfDispPlanktonDelta) || (radOfDisp < radOfDispPlankton) ||
+		(lifeTime> lifeTimePlankton + lifeTimePlanktonDelta) || (lifeTime < lifeTimePlankton) ||
 		(radOfDisp > radOfView))
 	{
+		std::cout << radOfDisp << radOfView << lifeTime <<coef<< std::endl;
 		throw Exception(1);
 	}
-	
+	body = sprites->PlanktonMove;
 }
 
 
 Plankton::~Plankton()
 {}
 
-bool Plankton::update(std::vector<Organism*>& organisms, coordinates sizeAqua)
+void Plankton::update(std::list<Organism*>& organisms, coordinates sizeAqua, std::set<Organism*>& del)
 {
-	body = &sprites.PlanktonMove;
+	prevLocation = location;
 	lifeTime--;
 	reproduction++;
 	if (lifeTime <= 0)
 	{
-		died(organisms);
-		return true;
+		del.insert(this);
+		return;
 	}
 	if (reproduction >= pauseReprodaction)
 	{
 		if (reproduce(organisms))
 		{
-			body = &sprites.PlanktonReprod;
-			return false;
+			body = sprites->PlanktonReprod;
 		}
+		return;
 	}
-	body = &sprites.PlanktonMove;
+	body = sprites->PlanktonMove;
 	move(organisms, sizeAqua);
-	return false;
 }
 
-bool Plankton::reproduce(std::vector<Organism*>& organisms)
+bool Plankton::reproduce(std::list<Organism*>& organisms)
 {
-	int  choice =-1;
+	std::list<Organism*>::iterator  choice = organisms.end();
 	int minWay=10000;
-	for (int i=0;i<organisms.size();i++)
+	for (auto org = organisms.begin(); org != organisms.end(); org++)
 	{
-		if ((organisms[i] != this) && (coef == organisms[i]->getCoef()) && (radOfDisp >= way(organisms[i]->getLocation())) &&
-			(organisms[i]->getReprodaction() > organisms[i]->getPauseReprodaction()))
+		int curWay = way((*org)->getLocation());
+		if ((*org != this) & (coef == (*org)->getCoef()) & (*org)->getSex() != this->getSex()
+			&((*org)->getReprodaction() >(*org)->getPauseReprodaction()) &(radOfDisp >= curWay))
 		{
-			if (way(organisms[i]->getLocation()) < minWay)
+			if (curWay < minWay)
 			{
-				minWay = way(organisms[i]->getLocation());
-				choice = i;
+				minWay = curWay;
+				choice = org;
 			}
 		}
 	}
-	if (choice!=-1)
+	if (choice!= organisms.end())
 	{
-		location = organisms[choice]->getLocation();
+		location = (*choice)->getLocation();
 		reproduction = 0;
-		organisms[choice]->reproductionUp();
-		int chance = rand() % 5 + 5;
+		(*choice)->reproductionUp();
+		int chance = childrenOfPlankton;
 		while (chance)
 		{
-			organisms.push_back(new Plankton(location, rand() % 2 + 1, rand() % 2 + 2, rand() % 5 + 5));
+			int radOfView = rand() % radOfViewPlanktonDelta + radOfViewPlankton;
+			int radOfDisp = rand() % radOfDispPlanktonDelta + radOfDispPlankton;
+			int lifeTime = rand() % lifeTimePlanktonDelta + lifeTimePlankton;
+			bool sex = rand() % 2;
+			organisms.push_back(new Plankton(location, radOfDisp, radOfView, lifeTime,sex, sprites));
 			chance--;
 		}
 		return true;
@@ -77,13 +82,21 @@ bool Plankton::reproduce(std::vector<Organism*>& organisms)
 	}
 }
 
-void Plankton::move(std::vector<Organism*>& organisms, coordinates sizeAqua)
+void Plankton::move(std::list<Organism*>& organisms, coordinates sizeAqua)
 {
 	float maxDist = 0;
+	std::list<Organism*> neighbors;
 	if (organisms.size() != 1)
 	{
-		
-		coordinates newLoc(location.first, location.second,location.third);
+		for (auto org : organisms)
+		{
+			if ((org != this) && (radOfView >= way(org->getLocation())) && (org->getCoef() == coefOfHerbivore))
+			{
+				neighbors.push_back(org);
+			}
+		}
+
+		coordinates newLoc(location.first, location.second, location.third);
 		for (int i = (-1)*radOfDisp; i <= radOfDisp; i++)
 		{
 			if ((location.first + i <= sizeAqua.first) && (location.first + i >= 0))
@@ -97,26 +110,23 @@ void Plankton::move(std::vector<Organism*>& organisms, coordinates sizeAqua)
 							if ((location.third + h <= sizeAqua.third) && (location.third + h >= 0))
 							{
 								int distance = 0;
-								for (auto u : organisms)
+								for (auto neig : neighbors)
 								{
-									if ((u != this) && (radOfView >= way(u->getLocation())) && (u->getCoef() == coefOfHerbivore))
-									{
-										distance += way(u->getLocation());
-									}
+									distance += way(coordinates(location.first + i, location.second + j,
+										location.third + h), neig->getLocation());
 								}
 								if (distance > maxDist)
 								{
 									maxDist = distance;
-									newLoc = coordinates(location.first + i, location.second + j,location.third+h);
+									newLoc = coordinates(location.first + i, location.second + j, location.third + h);
 								}
 							}
 						}
 					}
 				}
 			}
-
-			location = newLoc;
 		}
+		location = newLoc;
 	}
 	if ((organisms.size() == 1) || (maxDist == 0))
 	{
@@ -125,7 +135,7 @@ void Plankton::move(std::vector<Organism*>& organisms, coordinates sizeAqua)
 		{
 			newx = sizeAqua.first - location.first;
 		}
-		if (location.first + newx <0)
+		if (location.first + newx < 0)
 		{
 			newx = 0 - location.first;
 		}
@@ -134,7 +144,7 @@ void Plankton::move(std::vector<Organism*>& organisms, coordinates sizeAqua)
 		{
 			newy = sizeAqua.second - location.second;
 		}
-		if (location.second + newy <0)
+		if (location.second + newy < 0)
 		{
 			newy = 0 - location.second;
 		}
@@ -143,11 +153,10 @@ void Plankton::move(std::vector<Organism*>& organisms, coordinates sizeAqua)
 		{
 			newz = sizeAqua.third - location.third;
 		}
-		if (location.third + newz <0)
+		if (location.third + newz < 0)
 		{
 			newz = 0 - location.third;
 		}
-		location = coordinates(location.first + newx, location.second + newy, location.third+newz);
 	}
 
 }
