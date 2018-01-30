@@ -4,7 +4,7 @@
 
 Predator::Predator(coordinates location_, int radOfDisp_, int radOfview_,
 	int lifeTime_, int eatTime_, bool sex_,Sprites* sprites_) :Fish(location_, radOfDisp_, radOfview_,
-		lifeTime_, eatTime_, 6, coefOfPredator,sex_, sprites_)
+		lifeTime_, eatTime_, pauseReprOfPredator, coefOfPredator,sex_, sprites_)
 {
 	if ((radOfView > radOfViewPredator + radOfViewPredatorDelta) || (radOfView < radOfViewPredator) ||
 		(radOfDisp> radOfDispPredator + radOfDispPredatorDelta) || (radOfDisp < radOfDispPredator) ||

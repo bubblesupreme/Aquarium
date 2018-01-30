@@ -51,11 +51,11 @@ bool Drawer::animationUpdate(std::list<Organism*>&listOfOrganisms, float time)
 			{
 				speed = speedPredator;
 			}
-			if (distance > 2)
+			if (distance > 1)
 			{
-				x += speed*time*(x2 - x) / distance;//идем по иксу с помощью вектора нормали
-				y += speed*time*(y2 - y) / distance;//идем по игреку так же
-				z += speed*time*(z2 - z) / distance;
+					x += speed*(x2 - x) / distance;
+					y += speed*(y2 - y) / distance;\
+					z += speed*(z2 - z) / distance;
 				coordinates coor(x, y, z);
 				org->setPrevLocation(coor);
 				flag = true;
@@ -75,13 +75,12 @@ void Drawer::diedAnimation()
 }
 void Drawer::drawOrganisms(std::list<Organism*>& listOfOrganisms, int plan)
 {
-	//std::cout << "\n\n"<<listOfOrganisms.size()<<"   ";
 	if (plan == 1)
 	{
 		for (auto i : listOfOrganisms)
 		{
 			sf::Sprite sp = i->getSprite();
-			sp.setPosition(i->getPrevLocation().first*SIZE + 40, i->getPrevLocation().second*SIZE + 40);
+			sp.setPosition(i->getPrevLocation().first*SIZE , i->getPrevLocation().second*SIZE);
 			renderWindow->draw(sp);
 		}
 	}
@@ -90,9 +89,8 @@ void Drawer::drawOrganisms(std::list<Organism*>& listOfOrganisms, int plan)
 		for (auto i : listOfOrganisms)
 		{
 			sf::Sprite sp = i->getSprite();
-			sp.setPosition(i->getPrevLocation().first*SIZE + 40, i->getPrevLocation().third*SIZE + 40);
+			sp.setPosition(i->getPrevLocation().first*SIZE, i->getPrevLocation().third*SIZE);
 			renderWindow->draw(sp);
-			//std::cout << i->getLocation().first << "-" << i->getLocation().third << "  ";
 		}
 	}
 	else
@@ -100,9 +98,8 @@ void Drawer::drawOrganisms(std::list<Organism*>& listOfOrganisms, int plan)
 		for (auto i : listOfOrganisms)
 		{
 			sf::Sprite sp = i->getSprite();
-			sp.setPosition(i->getPrevLocation().second*SIZE + 40, i->getPrevLocation().third*SIZE + 40);
+			sp.setPosition(i->getPrevLocation().second*SIZE, i->getPrevLocation().third*SIZE );
 			renderWindow->draw(sp);
-			//std::cout << i->getLocation().second << "-" << i->getLocation().third << "  ";
 		}
 	}
 }
@@ -115,7 +112,7 @@ void Drawer::drawAquarium(int plan)
 			for (int j = 0; j < size.first; j++)
 			{
 				s_map.setTextureRect(sf::IntRect(0, 0, SIZE, SIZE));
-				s_map.setPosition(j * SIZE+40, i * SIZE+40);
+				s_map.setPosition(j * SIZE, i * SIZE);
 				renderWindow->draw(s_map);
 				renderWindow->draw(planText1);
 			}
@@ -128,7 +125,7 @@ void Drawer::drawAquarium(int plan)
 			for (int j = 0; j < size.first; j++)
 			{
 				s_map.setTextureRect(sf::IntRect(0, 0, SIZE, SIZE));
-				s_map.setPosition(j * SIZE + 40, i * SIZE + 40);
+				s_map.setPosition(j * SIZE, i * SIZE);
 				renderWindow->draw(s_map);
 				renderWindow->draw(planText2);
 			}
@@ -141,7 +138,7 @@ void Drawer::drawAquarium(int plan)
 			for (int j = 0; j < size.second; j++)
 			{
 				s_map.setTextureRect(sf::IntRect(0, 0, SIZE, SIZE));
-				s_map.setPosition(j * SIZE + 40, i * SIZE + 40);
+				s_map.setPosition(j * SIZE, i * SIZE);
 				renderWindow->draw(s_map);
 				renderWindow->draw(planText3);
 			}

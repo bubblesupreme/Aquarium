@@ -3,7 +3,7 @@
 
 Herbivore::Herbivore(coordinates location_, int radOfDisp_, int radOfview_,
 	int lifeTime_, int eatTime_, bool sex_,Sprites* sprites_) :Fish(location_, radOfDisp_, radOfview_,
-		lifeTime_, eatTime_, 6, coefOfHerbivore,sex_,sprites_)
+		lifeTime_, eatTime_, pauseReprOfHerbivore, coefOfHerbivore,sex_,sprites_)
 {
 	if ((radOfView> radOfViewHerbivore + radOfViewHerbivoreDelta) || (radOfView < radOfViewHerbivore) ||
 		(radOfDisp> radOfDispHerbivore + radOfDispHerbivoreDelta) || (radOfDisp < radOfDispHerbivore) ||

@@ -5,7 +5,7 @@
 void main()
 {
 	coordinates size(28, 28, 28);
-	sf::RenderWindow window(sf::VideoMode(1080, 1080), "Aquarium", sf::Style::Close);
+	sf::RenderWindow window(sf::VideoMode(980, 980), "Aquarium", sf::Style::Close);
 	window.setFramerateLimit(60);
 	sf::Event e;
 	const int UPDATING = 0, MODIFYING = 1;
@@ -16,16 +16,17 @@ void main()
 	try
 	{
 		Aquarium aq(size);
-		aq.randFill(100, 250, 60);
+		aq.randFill(210, 280, 65);
 		std::string mapPath = "water.png";
 		Drawer aquaDraw(window, size, mapPath);
 		bool Animation = false;
 		while (window.isOpen()) {
 
 			float time = clock.getElapsedTime().asMicroseconds();
-			clock.restart();
+			clock.restart();/*
+			std::cout <<"  ("<< time << ")";
 			time = time / 1000;
-
+			std::cout << "-" << time << "-  ";*/
 			while (window.pollEvent(e)) {
 				if (e.type == sf::Event::Closed) {
 					window.close();
@@ -92,6 +93,7 @@ void main()
 				{
 					aq.update();
 					count++;
+					std::cout << count << std::endl;
 				}
 			}
 			if (aq.isAlive())

@@ -107,19 +107,35 @@ Aquarium::~Aquarium()
 
 void Aquarium::update()
 {
+	int fish = 0;
+	int plank = 0;
+	int pred = 0;
 	std::set<Organism*> del;
-	for (auto org =listOfOrganisms.begin(); org !=listOfOrganisms.end(); org++)
+	for (auto org :listOfOrganisms)
 	{
-		(*org)->update(listOfOrganisms, coordinates(size.first - 1, size.second - 1, size.third - 1),del);
+		org->update(listOfOrganisms, coordinates(size.first - 1, size.second - 1, size.third - 1),del);
 		//std::cout << (*org)->getLocation().first*35 << "-" << (*org)->getLocation().second* 35 << "  ";
 		if (isFull())
 		{
 			show();
 			throw Exception(4);
 		}
+		if (org->getCoef() == coefOfHerbivore)
+		{
+			fish += 1;
+		}
+		else if (org->getCoef() == coefOfPlancton)
+		{
+			plank += 1;
+		}
+		else
+		{
+			pred += 1;
+		}
 	}
 	for (auto org = listOfOrganisms.begin(); org != listOfOrganisms.end();)
 	{
+
 		if (del.find(*org) != del.end())
 		{
 			
@@ -130,6 +146,9 @@ void Aquarium::update()
 			org++;
 		}
 	}
+	std::cout << "\nF" << fish << std::endl;
+	std::cout << "Pl" << plank << std::endl;
+	std::cout << "Pr" << pred << std::endl;
 }
 
 void  Aquarium::addOrganism(Organism* organism)

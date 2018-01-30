@@ -3,7 +3,7 @@
 
 Plankton::Plankton(coordinates location_, int radOfDisp_, int radOfview_,
 	int lifeTime_, bool sex_, Sprites* sprites_) :Organism(location_, radOfDisp_, radOfview_,
-		lifeTime_, 5, coefOfPlancton,sex_,sprites_)
+		lifeTime_, pauseReprOfPlankton, coefOfPlancton,sex_,sprites_)
 {
 	if ((radOfView> radOfViewPlankton+radOfViewPlanktonDelta) || (radOfView < radOfViewPlankton) ||
 		(radOfDisp> radOfDispPlankton + radOfDispPlanktonDelta) || (radOfDisp < radOfDispPlankton) ||
