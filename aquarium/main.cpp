@@ -1,29 +1,33 @@
 #include "aquarium.h"
 #include "Drawer.h"
 #include <iostream>
+#include <SFML/Audio.hpp>
 
 void main()
 {
+	sf::Music music;
+	music.openFromFile("music water.wav");
+	music.setLoop(true);
+	music.play();
 	coordinates size(28, 28, 28);
 	sf::RenderWindow window(sf::VideoMode(980, 980), "Aquarium", sf::Style::Close);
 	window.setFramerateLimit(60);
 	sf::Event e;
-	const int UPDATING = 0, MODIFYING = 1;
-	int state = UPDATING;
-	int plan = 1;
+	State state = UPDATING;
+	Plan plan=XY;
 	int count = 0;
-	sf::Clock clock;
+	music.play();
 	try
 	{
 		Aquarium aq(size);
-		aq.randFill(210, 280, 65);
+		aq.randFill(200, 255, 30);
 		std::string mapPath = "water.png";
 		Drawer aquaDraw(window, size, mapPath);
 		bool Animation = false;
 		while (window.isOpen()) {
 
-			float time = clock.getElapsedTime().asMicroseconds();
-			clock.restart();/*
+			/*float time = clock.getElapsedTime().asMicroseconds();
+			clock.restart();
 			std::cout <<"  ("<< time << ")";
 			time = time / 1000;
 			std::cout << "-" << time << "-  ";*/
@@ -39,13 +43,13 @@ void main()
 						window.close();
 						break;
 					case sf::Keyboard::Num1:
-						plan = 1;
+						plan = XY;
 						break;
 					case sf::Keyboard::Num2:
-						plan = 2;
+						plan = XZ;
 						break;
 					case sf::Keyboard::Num3:
-						plan = 3;
+						plan = ZY;
 						break;
 					case sf::Keyboard::Return:
 						switch (state) {
@@ -98,7 +102,7 @@ void main()
 			}
 			if (aq.isAlive())
 			{
-				Animation = aquaDraw.animationUpdate(aq.getListOfOrganisms(), time);
+				Animation = aquaDraw.animationUpdate(aq.getListOfOrganisms(),plan);
 				aquaDraw.drawAquarium(plan);
 				aquaDraw.drawOrganisms(aq.getListOfOrganisms(), plan);
 			}
@@ -113,7 +117,10 @@ void main()
 	}
 	catch (Exception &ex)
 	{
+		music.stop();
 		std::cout << ex.what() << std::endl;
+		music.openFromFile("vertu.wav");
+		music.play();
 	}
 	std::cout << count << std::endl;
 
