@@ -16,10 +16,9 @@ public:
 	void addOrganism(Organism* org);
 	std::list<Organism*> getListOfOrganisms() const;
 	void randFill(int numOfHerbivore, int numOfPlanktones, int numOfPredators);
-	bool isAlive() const;
+	void isAlive() const;
 
 private:
-	bool isFull() const;
 	coordinates size;
 	std::list<Organism*> listOfOrganisms;
 };

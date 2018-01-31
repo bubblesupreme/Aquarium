@@ -28,13 +28,9 @@ void Aquarium::randFill(int numOfHerbivore, int numOfPlanktones,int numOfPredato
 		int radOfView = rand() % radOfViewPlanktonDelta + radOfViewPlankton;
 		int radOfDisp = rand() % radOfDispPlanktonDelta + radOfDispPlankton;
 		int lifeTime = rand() % lifeTimePlanktonDelta + lifeTimePlankton;
-		posOfPlankton.first = rand() % (int)size.first + 0;
-		posOfPlankton.second = rand() % (int)size.second + 0;
-		posOfPlankton.third = rand() % (int)size.third + 0;
-		if (posOfPlankton.first<0 || posOfPlankton.first>size.first ||
-			posOfPlankton.second<0 || posOfPlankton.second>size.first ||
-			posOfPlankton.third<0 || posOfPlankton.third>size.first)
-		std::cout << "+  " << posOfPlankton.first << "-" << posOfPlankton.second << " " << posOfPlankton.third;
+		posOfPlankton.first = rand() % (int)size.first ;
+		posOfPlankton.second = rand() % (int)size.second ;
+		posOfPlankton.third = rand() % (int)size.third;
 		bool sex = rand() % 2;
 		try
 		{
@@ -55,13 +51,9 @@ void Aquarium::randFill(int numOfHerbivore, int numOfPlanktones,int numOfPredato
 		int radOfDisp = rand() % radOfDispHerbivoreDelta + radOfDispHerbivore;
 		int lifeTime = rand() % lifeTimeHerbivoreDelta + lifeTimeHerbivore;
 		int eattime = rand() % eatTimeHerbivoreDelta + eatTimeHerbivore;
-		posOfHerbivore.first = rand() % (int)size.first + 0;
-		posOfHerbivore.second = rand() % (int)size.second + 0;
-		posOfHerbivore.third = rand() % (int)size.third + 0;
-		if (posOfHerbivore.first<0 || posOfHerbivore.first>size.first ||
-			posOfHerbivore.second<0 || posOfHerbivore.second>size.first ||
-			posOfHerbivore.third<0 || posOfHerbivore.third>size.first)
-		std::cout << "+  " << posOfHerbivore.first << "-" << posOfHerbivore.second << " " << posOfHerbivore.third;
+		posOfHerbivore.first = rand() % (int)size.first;
+		posOfHerbivore.second = rand() % (int)size.second;
+		posOfHerbivore.third = rand() % (int)size.third;
 		bool sex = rand() % 2;
 		try
 		{
@@ -82,13 +74,9 @@ void Aquarium::randFill(int numOfHerbivore, int numOfPlanktones,int numOfPredato
 		int radOfDisp = rand() % radOfDispPredatorDelta + radOfDispPredator;
 		int lifeTime = rand() % lifeTimePredatorDelta + lifeTimePredator;
 		int eattime = rand() % eatTimePredatorDelta + eatTimePredator;
-		posOfPredators.first = rand() % (int)size.first + 0;
-		posOfPredators.second = rand() % (int)size.second + 0;
-		posOfPredators.third = rand() % (int)size.third + 0;
-		if (posOfPredators.first<0 || posOfPredators.first>size.first||
-			posOfPredators.second<0 || posOfPredators.second>size.first || 
-			posOfPredators.third<0 || posOfPredators.third>size.first )
-		std::cout << "+  " << posOfPredators.first << "-" << posOfPredators.second << " " << posOfPredators.third;
+		posOfPredators.first = rand() % (int)size.first;
+		posOfPredators.second = rand() % (int)size.second;
+		posOfPredators.third = rand() % (int)size.third ;
 		bool sex = rand() % 2;
 		try
 		{
@@ -160,7 +148,7 @@ void  Aquarium::addOrganism(Organism* organism)
 	listOfOrganisms.push_back(organism);
 }
 
-bool Aquarium::isAlive() const
+void Aquarium::isAlive() const
 {	
 	int fish = 0;
 	int plank = 0;
@@ -222,18 +210,4 @@ void Aquarium::show() const
 std::list<Organism*> Aquarium::getListOfOrganisms() const
 { 
 	return listOfOrganisms; 
-}
-
-bool Aquarium::isFull() const
-{
-	int sum = 0;
-	for (auto org : listOfOrganisms)
-	{
-		sum += org->getCoef();
-		if (sum > size.first*size.second*size.third)
-		{
-			return true;
-		}
-	}
-	return false;
 }

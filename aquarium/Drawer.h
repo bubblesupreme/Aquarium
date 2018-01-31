@@ -29,6 +29,6 @@ private:
 	sf::Text planText3;
 	float stepPlant = 0.02;
 	float stepBubble = -1;
-	const int SIZE = 35;
+	const int SIZE = 45;
 };
 #endif DRAWER_H

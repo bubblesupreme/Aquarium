@@ -7,14 +7,13 @@ bool afterDied(sf::RenderWindow* window);
 
 void main()
 {
-	std::string musicLive = "music water.wav";
-	std::string musicDied = "vertu.wav";
+	
 	sf::Music music;
 	music.openFromFile(musicLive);
 	music.setLoop(true);
 	music.play();
-	coordinates size(28, 28, 28);
-	sf::RenderWindow window(sf::VideoMode(980, 980), "Aquarium", sf::Style::Close);
+	coordinates size(21, 21, 21);
+	sf::RenderWindow window(sf::VideoMode(945, 945), "Aquarium", sf::Style::Close);
 	window.setFramerateLimit(60);
 	sf::Event e;
 	State state = UPDATING;
@@ -24,8 +23,7 @@ void main()
 	try
 	{
 		Aquarium aq(size);
-		aq.randFill(200, 255, 30);
-		std::string mapPath = "water.png";
+		aq.randFill(150, 255, 30);
 		Drawer aquaDraw(window, size, mapPath);
 		bool Animation = false;
 		while (window.isOpen()) {

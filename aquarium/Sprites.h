@@ -24,14 +24,14 @@ public:
 		PredatorReprod.setTexture(PredatorReprodT);
 		PlanktonMove.setTexture(PlanktonMoveT);
 		PlanktonReprod.setTexture(PlanktonReprodT);
-		HerbivoreEat.scale(0.28, 0.28);
-		HerbivoreMove.scale(0.28, 0.28);
-		HerbivoreReprod.scale(0.28, 0.28);
-		PredatorEat.scale(0.28, 0.28);
-		PredatorMove.scale(0.28, 0.28);
-		PredatorReprod.scale(0.28, 0.28);
-		PlanktonMove.scale(0.28, 0.28);
-		PlanktonReprod.scale(0.28, 0.28);
+		HerbivoreEat.scale(0.4, 0.4);
+		HerbivoreMove.scale(0.4, 0.4);
+		HerbivoreReprod.scale(0.4, 0.4);
+		PredatorEat.scale(0.4, 0.4);
+		PredatorMove.scale(0.4, 0.4);
+		PredatorReprod.scale(0.4, 0.4);
+		PlanktonMove.scale(0.4, 0.4);
+		PlanktonReprod.scale(0.4, 0.4);
 	}
 	~Sprites(){}
 

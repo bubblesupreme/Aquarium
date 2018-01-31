@@ -1,5 +1,5 @@
 #include "Drawer.h"
-const int SIZE = 35;
+
 Drawer::~Drawer()
 {
 }
@@ -9,6 +9,7 @@ Drawer::Drawer(sf::RenderWindow& renderWindow, coordinates size, std::string aqu
 
 	s_map.setTexture(map);
 	s_map.setPosition(0, 0);
+	s_map.scale(1.7, 1.7);
 	this->renderWindow = &renderWindow;
 	this->size = size;
 	this->fontToPlan.loadFromFile("CyrilicOld.ttf");
@@ -32,7 +33,7 @@ Drawer::Drawer(sf::RenderWindow& renderWindow, coordinates size, std::string aqu
 	s_bubble1.setPosition(20, 500);
 	s_bubble2.setTexture(bubble);
 	s_bubble2.setScale(0.5, 0.5);
-	s_bubble2.setPosition(850, 650);
+	s_bubble2.setPosition(850, 450);
 }
 bool Drawer::animationUpdate(std::list<Organism*>&listOfOrganisms, Plan plan)
 {
@@ -170,7 +171,7 @@ bool Drawer::animationUpdate(std::list<Organism*>&listOfOrganisms, Plan plan)
 		stepBubble = stepBubble*(-1);
 	}
 	s_bubble1.setPosition(20, s_bubble1.getPosition().y + stepBubble);
-	s_bubble2.setPosition(850, s_bubble2.getPosition().y + stepBubble);
+	s_bubble2.setPosition(850, s_bubble2.getPosition().y + (-1)*stepBubble);
 
 	return flag;
 }
@@ -223,43 +224,17 @@ void Drawer::drawAquarium(Plan plan)
 	switch (plan)
 	{
 	case XY:
-		for (int i = 0; i < size.second; i++)
-		{
-			for (int j = 0; j < size.first; j++)
-			{
-				s_map.setTextureRect(sf::IntRect(0, 0, SIZE, SIZE));
-				s_map.setPosition(j * SIZE, i * SIZE);
-				renderWindow->draw(s_map);
-				renderWindow->draw(planText1);
-			}
-		}
+		renderWindow->draw(planText1);
 		break;
 	case XZ:
-		for (int i = 0; i < size.third; i++)
-		{
-			for (int j = 0; j < size.first; j++)
-			{
-				s_map.setTextureRect(sf::IntRect(0, 0, SIZE, SIZE));
-				s_map.setPosition(j * SIZE, i * SIZE);
-				renderWindow->draw(s_map);
-				renderWindow->draw(planText2);
-			}
-		}
+		renderWindow->draw(planText2);
 		break;
 	case ZY:
-		for (int i = 0; i < size.third; i++)
-		{
-			for (int j = 0; j < size.second; j++)
-			{
-				s_map.setTextureRect(sf::IntRect(0, 0, SIZE, SIZE));
-				s_map.setPosition(j * SIZE, i * SIZE);
-				renderWindow->draw(s_map);
-				renderWindow->draw(planText3);
-			}
-		}
+		renderWindow->draw(planText3);
 		break;
 	default:
 		break;
 	}
+	renderWindow->draw(s_map);
 
 }
