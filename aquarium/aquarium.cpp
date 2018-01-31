@@ -115,11 +115,6 @@ void Aquarium::update()
 	{
 		org->update(listOfOrganisms, coordinates(size.first - 1, size.second - 1, size.third - 1),del);
 		//std::cout << (*org)->getLocation().first*35 << "-" << (*org)->getLocation().second* 35 << "  ";
-		if (isFull())
-		{
-			show();
-			throw Exception(4);
-		}
 		if (org->getCoef() == coefOfHerbivore)
 		{
 			fish += 1;
@@ -170,6 +165,7 @@ bool Aquarium::isAlive() const
 	int fish = 0;
 	int plank = 0;
 	int pred = 0;
+	int sum = 0;
 	for (auto org : listOfOrganisms)
 	{
 		if (org->getCoef() == coefOfHerbivore)
@@ -184,15 +180,16 @@ bool Aquarium::isAlive() const
 		{
 			pred += 1;
 		}
+		sum += org->getCoef();
 	}
 	if (fish == 0 || plank == 0 || pred == 0)
 	{
 		std::cout << fish << "fish/" << plank << "plank/pred" << pred << std::endl;
-		return false;
+		throw Exception(2);
 	}
-	else
+	if (sum > size.first*size.second*size.third)
 	{
-		return true;
+		throw Exception(3);
 	}
 }
 

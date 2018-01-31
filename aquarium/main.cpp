@@ -3,10 +3,14 @@
 #include <iostream>
 #include <SFML/Audio.hpp>
 
+bool afterDied(sf::RenderWindow* window);
+
 void main()
 {
+	std::string musicLive = "music water.wav";
+	std::string musicDied = "vertu.wav";
 	sf::Music music;
-	music.openFromFile("music water.wav");
+	music.openFromFile(musicLive);
 	music.setLoop(true);
 	music.play();
 	coordinates size(28, 28, 28);
@@ -26,11 +30,6 @@ void main()
 		bool Animation = false;
 		while (window.isOpen()) {
 
-			/*float time = clock.getElapsedTime().asMicroseconds();
-			clock.restart();
-			std::cout <<"  ("<< time << ")";
-			time = time / 1000;
-			std::cout << "-" << time << "-  ";*/
 			while (window.pollEvent(e)) {
 				if (e.type == sf::Event::Closed) {
 					window.close();
@@ -100,17 +99,33 @@ void main()
 					std::cout << count << std::endl;
 				}
 			}
-			if (aq.isAlive())
+			try
 			{
+				aq.isAlive();
 				Animation = aquaDraw.animationUpdate(aq.getListOfOrganisms(),plan);
 				aquaDraw.drawAquarium(plan);
 				aquaDraw.drawOrganisms(aq.getListOfOrganisms(), plan);
 			}
-			else
+			catch (Exception &ex)
 			{
 				aquaDraw.diedAnimation();
 				window.display();
-				throw Exception(3);
+				music.stop();
+				std::cout << ex.what() << std::endl;
+				music.openFromFile(musicDied);
+				music.play();
+				if (afterDied(&window))
+				{
+					aq.randFill(200, 255, 30);
+					count = 0;
+				}
+				else
+				{
+					window.close();
+				}
+				music.stop();
+				music.openFromFile(musicLive);
+				music.play();
 			}
 			window.display();
 		}
@@ -119,10 +134,27 @@ void main()
 	{
 		music.stop();
 		std::cout << ex.what() << std::endl;
-		music.openFromFile("vertu.wav");
-		music.play();
 	}
 	std::cout << count << std::endl;
 
 	std::cin.get();
+}
+
+bool afterDied(sf::RenderWindow* window)
+{
+	sf::Event e;
+	while (window->isOpen())
+	{
+		while (window->pollEvent(e))
+		{
+			if (e.type == sf::Event::Closed)
+			{
+				return false;
+			}
+			if (e.key.code == sf::Keyboard::Return)
+			{
+				return true;
+			}
+		}
+	}
 }
